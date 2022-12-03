@@ -16,14 +16,15 @@ jobs:
 
       - name: install deps
         run: npm install
-      - name: build art
+      - name: build artifact
         run: npm run build
-      - name: deploy(artifact)
+      - name: check artifact
         run: |
           cd ${{ github.workspace }}
           ls
           cd dist
           ls
+      - name: deploy(artifact)
         uses: actions/upload-artifact@v3
         with:
           name: dist
