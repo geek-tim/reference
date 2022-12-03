@@ -1,269 +1,2318 @@
-# 【进阶第14期】正则表达式入门
-[TOC]
+RegEX 备忘清单
+===
 
+正则表达式 (regex) 的快速参考，包括符号、范围、分组、断言和一些示例模式，以帮助您入门。
 
-## 前言
+入门
+--------
+
+### 介绍
+
+这是开始使用正则表达式(Regex)的快速备忘单。
+
+- [Python 中的 Regex](#python-中的正则表达式) _(Quick Reference)_
+- [JavaScript 中的 Regex](#javascript-中的正则表达式) _(Quick Reference)_
+- [PHP 中的 Regex](#php中的正则表达式) _(Quick Reference)_
+- [Java 中的 Regex](#java-中的正则表达式) _(Quick Reference)_
+- [MySQL 中的 Regex](#mysql中的正则表达式) _(Quick Reference)_
+- [Vim 中的 Regex](./vim#vim-搜索和替换) _(Quick Reference)_
+- [在线 Regex 测试器](https://regex101.com/) _(regex101.com)_
+- [轻松学习 Regex](https://github.com/ziishaned/learn-regex/blob/master/translations/README-cn.md) _(github.com)_
+- [正则表达式实例搜集](https://jaywcjlove.github.io/regexp-example) _(jaywcjlove.github.io)_
+<!--rehype:className=cols-2-->
+
+### 字符类
+
+范例 | 说明
+:-|-
+`[abc]`       | 单个字符：`a`、`b` 或 `c`
+`[^abc]`      | 一个字符，除了：`a`、`b` 或 `c`
+`[a-z]`       | 范围内的字符：`a-z`
+`[^a-z]`      | 不在范围内的字符：`a-z`
+`[0-9]`       | 范围内的数字：`0-9`
+`[a-zA-Z]`    | 范围内的字符：<br>`a-z` 或 `A-Z`
+`[a-zA-Z0-9]` | 范围内的字符：<br>`a-z`、`A-Z` 或 `0-9`
+
+### 量词
+
+范例 | 说明
+:-|-
+`a?`      | 零个或一个`a`
+`a*`      | 零个或多个 `a`
+`a+`      | 一个或多个`a`
+`[0-9]+`  | `0-9`中的一个或多个
+`a{3}`    | 正好 `3` 个 `a`
+`a{3,}`   | 3个或更多的`a`
+`a{3,6}`  | `a` 的 `3` 到 `6` 之间
+`a*`      | 贪心量词
+`a*?`     | 惰性量词
+`a*+`     | 占有量词
+
+### 常用元字符
+
+- \^
+- \{
+- \+
+- \<
+- \[
+- \*
+- \)
+- \>
+- \.
+- \(
+- \|
+- \$
+- \\
+- \?
+<!--rehype:className=cols-3 style-none-->
+
+使用 `\` 转义这些特殊字符
+
+### 元序列
+<!--rehype:wrap-class=row-span-4-->
+
+范例 | 说明
+:-|-
+`.`          | 任何单个字符
+`\s`         | 任何空白字符
+`\S`         | 任何非空白字符
+`\d`         | 任何数字，与 `[0-9]` 相同
+`\D`         | 任何非数字，与 `[^0-9]` 相同
+`\w`         | 任何单词字符
+`\W`         | 任何非单词字符
+`\X`         | 任何 Unicode 序列，包括换行符
+`\C`         | 匹配一个数据单元
+`\R`         | Unicode 换行符
+`\v`         | 垂直空白字符
+`\V`         | `\v` 的否定 - 除了换行符和垂直制表符之外的任何内容
+`\h`         | 水平空白字符
+`\H`         | `\h` 的否定
+`\K`         | 重置匹配
+`\n`         | 匹配第 `n` 个子模式
+`\pX`        | `Unicode` 属性 `X`
+`\p{...}`    | `Unicode` 属性或脚本类别
+`\PX`        | `\pX` 的否定
+`\P{...}`    | `\p` 的否定
+`\Q...\E`    | 引用;视为文字
+`\k<name>`   | 匹配子模式`name`
+`\k'name'`   | 匹配子模式`name`
+`\k{name}`   | 匹配子模式`name`
+`\gn`        | 匹配第 n 个子模式
+`\g{n}`      | 匹配第 n 个子模式
+`\g<n>`      | 递归第 n 个捕获组
+`\g'n'`      | 递归第 n 个捕获组。
+`\g{-n}`     | 匹配第 n 个相对前一个子模式
+`\g<+n>`     | 递归第 n 个相对即将到来的子模式
+`\g'+n'`     | 匹配第 n 个相对即将到来的子模式
+`\g'letter'` | 递归命名捕获组 `字母`
+`\g{letter}` | 匹配先前命名的捕获组 `字母`
+`\g<letter>` | 递归命名捕获组 `字母`
+`\xYY`       | 十六进制字符 `YY`
+`\x{YYYY}`   | 十六进制字符 `YYYY`
+`\ddd`       | 八进制字符`ddd`
+`\cY`        | 控制字符 `Y`
+`[\b]`       | 退格字符
+`\`          | 使任何字符文字
+
+### 锚点
+
+范例 | 说明
+:-|-
+`\G`    | 比赛开始
+`^`     | 字符串的开始
+`$`     | 字符串结束
+`\A`    | 字符串的开始
+`\Z`    | 字符串结束
+`\z`    | 字符串的绝对结尾
+`\b`    | 一个词的边界
+`\B`    | 非单词边界
+
+### 替代
+
+范例 | 说明
+:-|-
+`\0`       | 完整的比赛内容
+`\1`       | 捕获组 `1` 中的内容
+`$1`       | 捕获组 `1` 中的内容
+`${foo}`   | 捕获组 `foo` 中的内容
+`\x20`     | 十六进制替换值
+`\x{06fa}` | 十六进制替换值
+`\t`       | 标签
+`\r`       | 回车
+`\n`       | 新队
+`\f`       | 换页
+`\U`       | 大写转换
+`\L`       | 小写转换
+`\E`       | 终止任何转换
+
+### 组构造
+
+范例 | 说明
+:-|-
+`(...)`           | 捕获所有封闭的东西
+`(a\|b)`          | 匹配 `a` 或 `b`
+`(?:...)`         | 匹配随附的所有内容
+`(?>...)`         | 原子组（非捕获）
+`(?\|...)`        | 重复的子模式组号
+`(?#...)`         | 注解
+`(?'name'...)`    | 命名捕获组
+`(?<name>...)`    | 命名捕获组
+`(?P<name>...)`   | 命名捕获组
+`(?imsxXU)`       | 内联修饰符
+`(?(DEFINE)...)`  | 在使用它们之前预定义模式
+
+### 断言
+
+:-|-
+:-|-
+`(?(1)yes\|no)`      | 条件语句
+`(?(R)yes\|no)`      | 条件语句
+`(?(R#)yes\|no)`     | 递归条件语句
+`(?(R&name)yes\|no)` | 条件语句
+`(?(?=...)yes\|no)`  | 有条件的前瞻
+`(?(?<=...)yes\|no)` | 有条件的往后看
+
+### 递归
+
+:-|-
+:-|-
+`(?R)`      | 递归整个模式
+`(?1)`      | 递归第一个子模式
+`(?+1)`     | 递归第一个相对子模式
+`(?&name)`  | 递归子模式`name`
+`(?P=name)` | 匹配子模式`name`
+`(?P>name)` | 递归子模式`name`
+
+### 标志/修饰符
+
+:-|-
+:-|-
+`g`   | 全部
+`m`   | 多行
+`i`   | 不区分大小写
+`x`   | 忽略空格
+`s`   | 单线
+`u`   | 统一码
+`X`   | 扩展
+`U`   | 不贪心
+`A`   | 锚
+`J`   | 重复的组名
+`d`   | 结果包含捕获组子字符串开始和结束的索引
+
+### 零宽度断言
+
+:-|-
+:-|-
+`(?=...)`  | 正先行断言
+`(?!...)`  | 负先行断言
+`(?<=...)` | 正后发断言
+`(?<!...)` | 负后发断言
+`?=`|正先行断言-存在
+`?!`|负先行断言-排除
+`?<=`|正后发断言-存在
+`?<!`|负后发断言-排除
+
+零宽度断言 允许您在主模式之前（向后看）或之后（lookahead）匹配一个组，而不会将其包含在结果中。
+
+### POSIX 字符类
+<!--rehype:wrap-class=col-span-2-->
+
+字符类 | 如同 | 意义
+:-|-|-
+| `[[:alnum:]]`   | `[0-9A-Za-z]`                                     | 字母和数字
+| `[[:alpha:]]`   | `[A-Za-z]`                                        | 字母
+| `[[:ascii:]]`   | `[\x00-\x7F]`                                     | ASCII 码 0-127
+| `[[:blank:]]`   | `[\t ]`                                           | 仅空格或制表符
+| `[[:cntrl:]]`   | `[\x00-\x1F\x7F]`                                 | 控制字符
+| `[[:digit:]]`   | `[0-9]`                                           | 十进制数字
+| `[[:graph:]]`   | `[[:alnum:][:punct:]]`                            | 可见字符（不是空格）
+| `[[:lower:]]`   | `[a-z]`                                           | 小写字母
+| `[[:print:]]`   | `[ -~] == [ [:graph:]]`                           | 可见字符
+| `[[:punct:]]`   | <code>[!"#$%&’()*+,-./:;<=>?@[]^_\`{\|}~]</code>  | 可见标点符号
+| `[[:space:]]`   | <code>[\t\n\v\f\r ]</code>                        | 空白
+| `[[:upper:]]`   | `[A-Z]`                                           | 大写字母
+| `[[:word:]]`    | `[0-9A-Za-z_]`                                    | 单词字符
+| `[[:xdigit:]]`  | `[0-9A-Fa-f]`                                     | 十六进制数字
+| `[[:<:]]`       | `[\b(?=\w)]`                                      | 词的开头
+| `[[:>:]]`       | `[\b(?<=\w)]`                                     | 词尾
+<!--rehype:className=show-header-->
+
+### 控制动词
+
+:-|-
+:-|-
+`(*ACCEPT)`            | 控制动词
+`(*FAIL)`              | 控制动词
+`(*MARK:NAME)`         | 控制动词
+`(*COMMIT)`            | 控制动词
+`(*PRUNE)`             | 控制动词
+`(*SKIP)`              | 控制动词
+`(*THEN)`              | 控制动词
+`(*UTF)`               | 图案修饰符
+`(*UTF8)`              | 图案修饰符
+`(*UTF16)`             | 图案修饰符
+`(*UTF32)`             | 图案修饰符
+`(*UCP)`               | 图案修饰符
+`(*CR)`                | 换行修饰符
+`(*LF)`                | 换行修饰符
+`(*CRLF)`              | 换行修饰符
+`(*ANYCRLF)`           | 换行修饰符
+`(*ANY)`               | 换行修饰符
+`\R`                   | 换行修饰符
+`(*BSR_ANYCRLF)`       | 换行修饰符
+`(*BSR_UNICODE)`       | 换行修饰符
+`(*LIMIT_MATCH=x)`     | 正则表达式引擎修饰符
+`(*LIMIT_RECURSION=d)` | 正则表达式引擎修饰符
+`(*NO_AUTO_POSSESS)`   | 正则表达式引擎修饰符
+`(*NO_START_OPT)`      | 正则表达式引擎修饰符
+
+正则表达式示例
+--------------
+
+### 字符串
+
+范例 | 说明
+:-|-
+`ring` | 匹配 <yel>ring</yel> sp<yel>ring</yel>board 等。
+`.` | 匹配 <yel>a</yel>、<yel>9</yel>、<yel>+</yel> 等。
+`h.o` | 匹配 <yel>hoo</yel>、<yel>h2o</yel>、<yel>h/o</yel> 等。
+`ring\?` | 匹配 <yel>ring?</yel>
+`\(quiet\)` | 匹配<yel>（安静）</yel>
+`c:\\windows` | 匹配 <yel>c:\windows</yel>
+
+使用 `\` 搜索这些特殊字符：<br> `[ \ ^ $ . | ? * + ( ) { }`
+
+### 速记类
+
+范例 | 说明
+:-|-
+`\w` | “单词”字符 <br> _(字母、数字或下划线)_
+`\d` | 数字
+`\s` | 空格 <br> _(空格、制表符、vtab、换行符)_
+`\W, \D, or \S` | 不是单词、数字或空格
+`[\D\S]` | 表示不是数字或空格，两者都匹配
+`[^\d\s]` | 禁止数字和空格
+
+### 出现次数
+
+范例 | 说明
+:-|-
+`colou?r`           | 匹配 <yel>color</yel> 或 <yel>color</yel>
+`[BW]ill[ieamy's]*` | 匹配 <yel>Bill</yel>、<yel>Willy</yel>、<yel>William's</yel> 等。
+`[a-zA-Z]+`         | 匹配 1 个或多个字母
+`\d{3}-\d{2}-\d{4}` | 匹配 SSN
+`[a-z]\w{1,7}`      | 匹配 UW NetID
+
+### 备择方案
+
+范例 | 说明
+:-|-
+`cat\|dog` | 匹配 <yel>cat</yel> 或 <yel>dog</yel>
+`id\|identity` | 匹配 <yel>id</yel> 或 <yel>id</yel>entity
+`identity\|id` | 匹配 <yel>id</yel> 或 <yel>identity</yel>
+
+当替代品重叠时，命令从长到短
+
+### 字符类
+
+范例 | 说明
+:-|-
+`[aeiou]`     | 匹配任何元音
+`[^aeiou]`    | 匹配一个非元音
+`r[iau]ng`    | 匹配<yel>ring</yel>、w<yel>rang</yel>le、sp<yel>rung</yel>等。
+`gr[ae]y`     | 匹配 <yel>gray</yel> 或 <yel>grey</yel>
+`[a-zA-Z0-9]` | 匹配任何字母或数字
+
+在 `[ ]` 中总是转义 `. \ ]` 有时是 `^ - .`
+
+### 贪婪与懒惰
+
+范例 | 说明
+:-|-
+`*  + {n,}`<br>_greedy_  | 尽可能匹配
+`<.+>`                | 在 <yel>\<b>bold\<\/b></yel> 中找到 1 个大匹配项
+`*?  +? {n,}?`<br>_lazy_ | 尽可能少匹配
+`<.+?>`                  | 在 \<<yel>b</yel>>bold\<<yel>\/b</yel>> 中找到 2 个匹配项
+
+### 范围
+<!--rehype:wrap-class=col-span-2-->
+
+范例 | 说明
+:-|-
+`\b` | “单词”边缘（非“单词”字符旁边）
+`\bring` | 单词以“ring”开头，例如 <yel>ringtone</yel>
+`ring\b` | 单词以“ring”结尾，例如 <yel>spring</yel>
+`\b9\b` | 匹配单个数字 <yel>9</yel>，而不是 19、91、99 等。
+`\b[a-zA-Z]{6}\b` | 匹配 6 个字母的单词
+`\B` | 不是字边
+`\Bring\B` | 匹配 <yel>springs</yel> 和 <yel>wringer</yel>
+`^\d*$` | 整个字符串必须是数字
+`^[a-zA-Z]{4,20}$` | 字符串必须有 4-20 个字母
+`^[A-Z]` | 字符串必须以大写字母开头
+`[\.!?"')]$` | 字符串必须以终端标点结尾
+
+### 修饰
+
+范例 | 说明
+:-|-
+`(?i)`[a-z]*`(?-i)` | 忽略大小写开/关
+`(?s)`.*`(?-s)`     | 匹配多行（导致 . 匹配换行符）
+`(?m)`^.*;$`(?-m)`  | <yel>^</yel> & <yel>$</yel> 匹配行不是整个字符串
+`(?x)`              | #free-spacing 模式，此 EOL 注释被忽略
+`(?-x)`             | 自由空间模式关闭
+/regex/`ismx`       | 修改整个字符串的模式
+
+### 组
+
+范例 | 说明
+:-|-
+`(in\|out)put` | 匹配 <yel>input</yel> 或 <yel>output</yel>
+`\d{5}(-\d{4})?` | 美国邮政编码 _(“+ 4”可选)_
+
+如果组后匹配失败，解析器会尝试每个替代方案。
+<br>
+可能导致灾难性的回溯。
+
+### 反向引用
+
+范例 | 说明
+:-|-
+`(to) (be) or not \1 \2` | 匹配 <yel>to be or not to be</yel>
+`([^\s])\1{2}`           | 匹配非空格，然后再相同两次 &nbsp; <yel>aaa</yel>, <yel>...</yel>
+`\b(\w+)\s+\1\b`         | 匹配双字
+
+### 非捕获组
+
+范例 | 说明
+:-|-
+`on(?:click\|load)` | 快于：`on(click\|load)`
+
+尽可能使用非捕获或原子组
+
+### 原子组
+
+范例 | 说明
+:-|-
+`(?>red\|green\|blue)` | 比非捕获更快
+`(?>id\|identity)\b`   | 匹配 <yel>id</yel>，但不匹配 <yel>id</yel>entity
+
+"id" 匹配，但 `\b` 在原子组之后失败，
+解析器不会回溯到组以重试“身份”
+
+如果替代品重叠，请从长到短命令。
+
+### 零宽度断言 Lookaround(前后预查)
+<!--rehype:wrap-class=col-span-2 row-span-2-->
+
+范例 | 说明
+:-|-
+`(?= )`                 | 向前看，如果你能提前找到
+`(?! )`                 | 向前看，如果你找不到前面
+`(?<= )`                | 向后看，如果你能找到后面
+`(?<! )`                | 向后看，如果你找不到后面
+`\b\w+?(?=ing\b)`       | 匹配 <yel>warbl</yel>ing, <yel>str</yel>ing, <yel>fish</yel>ing, ...
+`\b(?!\w+ing\b)\w+\b`   | 不以“ing”结尾的单词
+`(?<=\bpre).*?\b`      | 匹配 pre<yel>tend</yel>、pre<yel>sent</yel>、pre<yel>fix</yel>、...
+`\b\w{3}(?<!pre)\w*?\b` | 不以“pre”开头的词
+`\b\w+(?<!ing)\b`       | 匹配不以“ing”结尾的单词
+
+### If-then-else
+
+匹配 `Mr.` 或 `Ms.` 如果单词 `her` 稍后在字符串中
+
+```
+M(?(?=.*?\bher\b)s|r)\.
+```
+
+需要环顾 `IF` 条件
+
+基础实例
 ---
-### 正则表达式功能：验证、查找、替换
-1.`验证`字符串是否符合指定特征，比如验证是否是合法的邮件地址。**Validation**
-2. 用来`查找`字符串，从一个长的文本中查找符合指定特征的字符串，比查找固定字符串更加灵活方便。**Match/find**
-3. 用来`替换`，比普通的替换更强大。**Replace**
 
-## 正则表达式规则
+### 基本匹配
+
+表达式 | 匹配示例
+:- | -
+`the` | The fat cat sat on `the` mat.
+`The` | `The` fat cat sat on the mat.
+<!--rehype:className=show-header-->
+
+由字母`t`开始，接着是`h`，再接着是`e`
+
+### 点运算符 `.`
+
+表达式 | 匹配示例
+:- | -
+`.ar` | The `car` `par`ked in the `gar`age.
+<!--rehype:className=show-header-->
+
+表达式`.ar`匹配一个任意字符后面跟着是`a`和`r`的字符串
+
+### 字符集
+
+表达式 | 匹配示例
+:- | -
+`.ar` | The `car` <pur>`par`</pur>ked in the `gar`age.
+`ar[.]` | A garage is a good place to park a c`ar`.
+<!--rehype:className=show-header-->
+
+方括号的句号就表示句号。表达式 `ar[.]` 匹配 `ar.` 字符串
+
+### 否定字符集
+
+表达式 | 匹配示例
+:- | -
+`[^c]ar` | The car `par`ked in the `gar`age.
+<!--rehype:className=show-header-->
+
+表达式 `[^c]ar` 匹配一个后面跟着 `ar` 的除了`c`的任意字符。
+
+### 重复次数
+<!--rehype:wrap-class=row-span-2-->
+
+#### `*` 号
+
+表达式 | 匹配示例
+:- | -
+`[a-z]*` | T`he` <pur>`car`</pur> `parked` <pur>`in`</pur> `the` <pur>`garage`</pur> #21.
+`\s*cat\s*` | The fat `cat` sat on the con`cat`enation.
+
+表达式 `[a-z]*` 匹配一个行中所有以小写字母开头的字符串。
+
+#### `+` 号
+
+表达式 | 匹配示例
+:- | -
+`c.+t` | The `fat cat sat on the mat`.
+
+表达式 `c.+t` 匹配以首字母c开头以t结尾，中间跟着至少一个字符的字符串。
+
+#### `?` 号
+
+表达式 | 匹配示例
+:- | -
+`[T]he` | `The` car is parked in the garage.
+`[T]?he` | `The` car is parked in t`he` garage.
+
+表达式 `[T]?he` 匹配字符串 `he` 和 `The`。
+
+### `{}` 号
+
+表达式 | 匹配示例
+:- | -
+`[0-9]{2,3}` | The number was 9.`999`7 but we rounded it off to `10`.0.
+`[0-9]{2,}` | The number was 9.`9997` but we rounded it off to `10`.0.
+`[0-9]{3}` | The number was 9.`999`7 but we rounded it off to 10.0.
+<!--rehype:className=style-list-arrow-->
+
+### `(...)` 特征标群
+
+表达式 | 匹配示例
+:- | -
+`(c\|g\|p)ar` | The `car` is `par`ked in the `gar`age.
+<!--rehype:className=show-header-->
+
+表达式 `(c|g|p)ar` 匹配 `car` 或 `gar` 或 `par`。 注意 `\` 是在 Markdown 中为了不破坏表格转义 `|`。
+
+### `|` 或运算符
+
+表达式 | 匹配示例
+:- | -
+`(T\|t)he\|car` | The car is parked in the garage.
+<!--rehype:className=show-header-->
+
+表达式 `(T|t)he|car` 匹配 `(T|t)he` 或 `car`
+
+### 转码特殊字符
+
+表达式 | 匹配示例
+:- | -
+`(f\|c\|m)at\.?` | The `fat` `cat` sat on the `mat.`
+<!--rehype:className=show-header-->
+
+如果想要匹配句子中的 `.` 则要写成 `\.` 以下这个例子 `\.?` 是选择性匹配.
+
+### 锚点
+<!--rehype:wrap-class=row-span-2-->
+
+匹配指定开头或结尾的字符串就要使用到锚点。
+
+#### `^` 号 (符串的开头)
+
+表达式 | 匹配示例
+:- | -
+`(T\|t)he` | `The` car is parked in `the` garage.
+`^(T\|t)he` | `The` car is parked in the garage.
+<!--rehype:className=show-header-->
+
+#### `$` 号 (否是最后一个)
+
+表达式 | 匹配示例
+:- | -
+`(at\.)` | The fat c`at.` s`at.` on the m`at.`
+`(at\.)$` | The fat cat. sat. on the m`at.`
+<!--rehype:className=show-header-->
+
+### 简写字符集
+<!--rehype:wrap-class=row-span-4-->
+
+|简写|描述|
+|:----:|----|
+|`.`|除换行符外的所有字符|
+|`\w`|匹配所有字母数字<br />等同于 `[a-zA-Z0-9_]`|
+|`\W`|匹配所有非字母数字，即符号<br />等同于： `[^\w]`|
+|`\d`|匹配数字： `[0-9]`|
+|`\D`|匹配非数字： `[^\d]`|
+|`\s`|匹配所有空格字符<br />等同于：`[\t\n\f\r\p{Z}]`|
+|`\S`|匹配所有非空格字符： `[^\s]`|
+|`\f`|匹配一个换页符|
+|`\n`|匹配一个换行符|
+|`\r`|匹配一个回车符|
+|`\t`|匹配一个制表符|
+|`\v`|匹配一个垂直制表符|
+|`\p`|匹配 CR/LF(等同于 `\r\n`)<br />用来匹配 DOS 行终止符|
+<!--rehype:className=show-header-->
+
+正则表达式提供一些常用的字符集简写。
+
+### `?=...` 正先行断言
+
+表达式 | 匹配示例
+:- | -
+`(T\|t)he(?=\sfat)` | `The` fat cat sat on the mat.
+<!--rehype:className=show-header-->
+
+`The` 和 `the` 后面紧跟着 `(空格)fat`。
+
+### `?!...` 负先行断言
+
+表达式 | 匹配示例
+:- | -
+`(T\|t)he(?!\sfat)` | The fat cat sat on `the` mat.
+<!--rehype:className=show-header-->
+
+匹配 `The` 和 `the`，且其后不跟着 `(空格)fat`。
+
+### `?<= ...` 正后发断言
+
+表达式 | 匹配示例
+:- | -
+`(?<=(T\|t)he\s)(fat\|mat)` | The `fat` cat sat on the `mat`.
+<!--rehype:className=show-header-->
+
+匹配 `fat` 和 `mat`，且其前跟着 `The` 或 `the`。
+
+### `?<!...` 负后发断言
+
+表达式 | 匹配示例
+:- | -
+`(?<!(T\|t)he\s)(cat)` | The cat sat on `cat`.
+<!--rehype:className=show-header-->
+
+匹配 `cat`，且其前不跟着 `The` 或 `the`。
+
+### 忽略大小写 (Case Insensitive)
+
+表达式 | 匹配示例
+:- | -
+`The` | The `fat` cat sat on the mat.
+`/The/gi` | `The` fat cat sat on `the` mat.
+<!--rehype:className=show-header-->
+
+修饰语 `i` 用于忽略大小写，`g` 表示全局搜索。
+
+### 全局搜索 (Global search)
+
+表达式 | 匹配示例
+:- | -
+`/.(at)/` | The `fat` cat sat on the mat.
+`/.(at)/g` | The `fat` `cat` `sat` on the `mat`.
+<!--rehype:className=show-header-->
+
+表达式 `/.(at)/g` 表示搜索 任意字符（除了换行）+ `at`，并返回全部结果。
+
+### 多行修饰符 (Multiline)
+
+表达式 | 匹配示例
+:- | -
+`/.at(.)?$/` | The fat<br /> cat sat<br /> on the `mat`.
+`/.at(.)?$/gm` | The `fat`<br /> cat `sat`<br /> on the `mat`.
+<!--rehype:className=show-header-->
+
+### 贪婪匹配与惰性匹配 (Greedy vs lazy matching)
+
+表达式 | 匹配示例
+:- | -
+`/(.*at)/` | `The fat cat sat on the mat`.
+`/(.*?at)/` | `The fat` cat sat on the mat.
+<!--rehype:className=show-header-->
+
+Python 中的正则表达式
+---------------
+
+### 入门
+
+导入正则表达式模块
+
+```python
+import re
+```
+
+### 实例
+<!--rehype:wrap-class=col-span-2 row-span-3-->
+
+#### re.search()
+
+```python
+>>> sentence = 'This is a sample string'
+>>> bool(re.search(r'this', sentence, flags=re.I))
+True
+>>> bool(re.search(r'xyz', sentence))
+False
+```
+
+#### re.findall()
+
+```python
+>>> re.findall(r'\bs?pare?\b', 'par spar apparent spare part pare')
+['par', 'spar', 'spare', 'pare']
+>>> re.findall(r'\b0*[1-9]\d{2,}\b', '0501 035 154 12 26 98234')
+['0501', '154', '98234']
+```
+
+#### re.finditer()
+
+```python
+>>> m_iter = re.finditer(r'[0-9]+', '45 349 651 593 4 204')
+>>> [m[0] for m in m_iter if int(m[0]) < 350]
+['45', '349', '4', '204']
+```
+
+#### re.split()
+
+```python
+>>> re.split(r'\d+', 'Sample123string42with777numbers')
+['Sample', 'string', 'with', 'numbers']
+```
+
+#### re.sub()
+
+```python
+>>> ip_lines = "catapults\nconcatenate\ncat"
+>>> print(re.sub(r'^', r'* ', ip_lines, flags=re.M))
+* catapults
+* concatenate
+* cat
+```
+
+#### re.compile()
+
+```python
+>>> pet = re.compile(r'dog')
+>>> type(pet)
+<class '_sre.SRE_Pattern'>
+>>> bool(pet.search('They bought a dog'))
+True
+>>> bool(pet.search('A cat crossed their path'))
+False
+```
+
+### 函数
+
+函数 | 说明
+:-|-
+`re.findall`  | 返回包含所有匹配项的列表
+`re.finditer` | 返回一个可迭代的匹配对象<br/> _(每个匹配一个)_
+`re.search`   | 如果字符串中的任何位置存在匹配项，则返回 Match 对象
+`re.split`    | 返回一个列表，其中字符串在每次匹配时被拆分
+`re.sub`      | 用字符串替换一个或多个匹配项
+`re.compile`  | 编译正则表达式模式供以后使用
+`re.escape`   | 返回所有非字母数字反斜杠的字符串
+
+### Flags 标志
+
+:- | - | -
+:- | - | -
+`re.I` | `re.IGNORECASE` | 忽略大小写
+`re.M` | `re.MULTILINE`  | 多行
+`re.L` | `re.LOCALE`     | 使 `\w`、`\b`、`\s` _locale 依赖_
+`re.S` | `re.DOTALL`     | 点匹配所有 _（包括换行符）_
+`re.U` | `re.UNICODE`    | 使 `\w`、`\b`、`\d`、`\s` _unicode 依赖_
+`re.X` | `re.VERBOSE`    | 可读风格
+
+JavaScript 中的正则表达式
+---------------
+
+### RegExp
+<!--rehype:wrap-class=row-span-4-->
+
+#### 属性
+
+:- | :-
+:- | :-
+`dotAll` | 是否使用了 `s` 修饰符
+`flags` | 返回标志的字符串
+`global` | 是否使用了 `g` (全部)修饰符
+`hasIndices` | 是否使用了 `d` 修饰符
+`ignoreCase` | 匹配文本的时候是否忽略大小写 `i`
+`multiline` | 是否进行多行搜索 `m`
+`lastIndex` | 该索引表示从哪里开始下一个匹配
+`source` | 正则表达式的文本
+`sticky` | 搜索是否是 sticky
+`unicode` | Unicode 功能是否开启
+
+#### 方法
+
+:- | :-
+:- | :-
+`match()` | 获取匹配结果
+`matchAll()` | 所有匹配项
+`replace()` | 替换所有符合正则模式的匹配项
+`search()` | 搜索以取得匹配正则模式的项
+`split()` | 切割字符串返回字符串数组
+~~`compile()`~~ | （重新）编译正则表达式
+`exec()` | 指定字符串中执行一个搜索匹配
+`test()` | 正则表达式与指定的字符串是否匹配
+`toString()` | 返回该正则表达式的字符串
+
+### test()
+
+```javascript
+let textA = 'I like APPles very much';
+let textB = 'I like APPles';
+let regex = /apples$/i
+ 
+console.log(regex.test(textA)); // false
+console.log(regex.test(textB)); // true
+```
+
+### search()
+
+```javascript
+let text = 'I like APPles very much';
+let regexA = /apples/;
+let regexB = /apples/i;
+
+console.log(text.search(regexA)); // -1
+console.log(text.search(regexB)); // 7
+```
+
+### exec()
+
+```javascript
+let text = 'Do you like apples?';
+let regex= /apples/;
+// Output: apples
+console.log(regex.exec(text)[0]);
+// Output: Do you like apples?
+console.log(regex.exec(text).input);
+```
+
+### match()
+
+```javascript
+let text = 'Here are apples and apPleS';
+let regex = /apples/gi;
+ 
+// Output: [ "apples", "apPleS" ]
+console.log(text.match(regex));
+```
+
+### split()
+<!--rehype:wrap-class=col-span-2-->
+
+```javascript
+let text = 'This 593 string will be brok294en at places where d1gits are.';
+let regex = /\d+/g
+ 
+// Output: [ "This ", " string will be brok", "en at places where d", "gits are." ] 
+console.log(text.split(regex))
+```
+
+### matchAll()
+
+```javascript
+let regex = /t(e)(st(\d?))/g;
+let text = 'test1test2';
+let array = [...text.matchAll(regex)];
+// Output: ["test1", "e", "st1", "1"]
+console.log(array[0]);
+// Output: ["test2", "e", "st2", "2"]
+console.log(array[1]);
+```
+
+### replace()
+
+```javascript
+let text = 'Do you like aPPles?';
+let regex = /apples/i
+ 
+// Output: Do you like mangoes?
+let result = text.replace(regex, 'mangoes');
+console.log(result);
+```
+
+### 属性示例
+
+```javascript
+/d/s.dotAll;             // => true
+/d/g.global;             // => true
+/d/ig.flags;             // => "gi"
+/d/d.hasIndices;         // => true
+/d/i.ignoreCase;         // => true
+```
+
+### 多行文本中使用正则表达式
+
+```js
+let s = "Please yes\nmake my day!";
+
+s.match(/yes[^]*day/);
+// 返回 'yes\nmake my day'
+```
+
+### replaceAll()
+
+```javascript
+let regex = /apples/gi;
+let text = 'Here are apples and apPleS';
+
+text.replaceAll(regex, "mangoes");
+// 返回: Here are mangoes and mangoes
+```
+<!--rehype:className=wrap-text-->
+
+PHP中的正则表达式
+------------
+
+### 函数
+<!--rehype:wrap-class=col-span-2-->
+
+:- | -
+:- | -
+`preg_match()`            | 执行正则表达式匹配
+`preg_match_all()`        | 执行全局正则表达式匹配
+`preg_replace_callback()` | 使用回调执行正则表达式搜索和替换
+`preg_replace()`          | 执行正则表达式搜索和替换
+`preg_split()`            | 按正则表达式模式拆分字符串
+`preg_grep()`             | 返回与模式匹配的数组条目
+
+### preg_replace
+
+```php
+$str = "Visit Microsoft!";
+$regex = "/microsoft/i";
+
+// Output: Visit QuickRef!
+echo preg_replace($regex, "QuickRef", $str); 
+```
+<!--rehype:className=wrap-text-->
+
+### preg_match
+
+```php
+$str = "Visit QuickRef";
+$regex = "#quickref#i";
+// Output: 1
+echo preg_match($regex, $str);
+```
+
+### preg_matchall
+<!--rehype:wrap-class=col-span-2 row-span-2-->
+
+```php
+$regex = "/[a-zA-Z]+ (\d+)/";
+$input_str = "June 24, August 13, and December 30";
+if (preg_match_all($regex, $input_str, $matches_out)) {
+    // Output: 2
+    echo count($matches_out);
+    // Output: 3
+    echo count($matches_out[0]);
+    // Output: Array("June 24", "August 13", "December 30")
+    print_r($matches_out[0]);
+    // Output: Array("24", "13", "30")
+    print_r($matches_out[1]);
+}
+```
+
+### preg_grep
+
+```php
+$arr = ["Jane", "jane", "Joan", "JANE"];
+$regex = "/Jane/";
+// Output: Jane
+echo preg_grep($regex, $arr);
+```
+
+### preg_split
+<!--rehype:wrap-class=col-span-2-->
+
+```php
+$str = "Jane\tKate\nLucy Marion";
+$regex = "@\s@";
+// Output: Array("Jane", "Kate", "Lucy", "Marion")
+print_r(preg_split($regex, $str));
+```
+
+Java 中的正则表达式
+-------------
+
+### 风格
+<!--rehype:wrap-class=col-span-2-->
+
+#### 第一种方式
+
+```java
+Pattern p = Pattern.compile(".s", Pattern.CASE_INSENSITIVE);
+Matcher m = p.matcher("aS");  
+boolean s1 = m.matches();  
+System.out.println(s1);   // Outputs: true
+```
+
+#### 第二种方式
+
+```java
+boolean s2 = Pattern.compile("[0-9]+").matcher("123").matches();  
+System.out.println(s2);   // Outputs: true
+```
+
+#### 第三种方式
+
+```java
+boolean s3 = Pattern.matches(".s", "XXXX");  
+System.out.println(s3);   // Outputs: false
+```
+
+### 模式字段
+
+:- | -
+:- | -
+`CANON_EQ`         | 规范等价
+`CASE_INSENSITIVE` | 不区分大小写的匹配
+`COMMENTS`         | 允许空格和注释
+`DOTALL`           | 圆点模式
+`MULTILINE`        | 多行模式
+`UNICODE_CASE`     | Unicode 感知大小写折叠
+`UNIX_LINES`       | Unix 行模式
+
+### 方法
+
+#### Pattern
+
+- 模式编译 compile(字符串正则表达式 [,int flags])
+- 布尔匹配 matches([字符串正则表达式,] CharSequence 输入)
+- String[] 拆分 split(字符串正则表达式 [,int 限制])
+- 字符串引用 quote(字符串 s)
+
+#### 匹配器
+
+- int start([int group | 字符串名称])
+- int end([int group | 字符串名称])
+- 布尔 find([int start])
+- 字符 group([int 组 | 字符串名称])
+- 匹配器重置 reset()
+
+#### String
+
+- boolean matches(String regex)
+- String replaceAll(String regex, 字符串替换)
+- String[] split(String regex[, int limit])
+
+还有更多方法...
+
+### 例子
+<!--rehype:wrap-class=col-span-2-->
+
+替换句子：
+
+```java
+String regex = "[A-Z\n]{5}$";
+String str = "I like APP\nLE";
+Pattern p = Pattern.compile(regex, Pattern.MULTILINE);
+Matcher m = p.matcher(str);
+// Outputs: I like Apple!
+System.out.println(m.replaceAll("pple!"));
+```
+
+所有匹配的数组：
+
+```java
+String str = "She sells seashells by the Seashore";
+String regex = "\\w*se\\w*";
+Pattern p = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
+Matcher m = p.matcher(str);
+List<String> matches = new ArrayList<>();
+while (m.find()) {
+    matches.add(m.group());
+}
+// Outputs: [sells, seashells, Seashore]
+System.out.println(matches);
+```
+
+MySQL中的正则表达式
+-------------
+<!--rehype:body-class=cols-2-->
+
+### 函数
+
+函数名称 | 说明
+:- | -
+`REGEXP` | 字符串是否匹配正则表达式
+`REGEXP_INSTR()` | 匹配正则表达式的子字符串的起始索引 <br>_（注意：仅限 MySQL 8.0+）_
+`REGEXP_LIKE()` | 字符串是否匹配正则表达式 <br>_(注意：仅 MySQL 8.0+)_
+`REGEXP_REPLACE()` | 替换匹配正则表达式的子字符串 <br>_（注意：仅限 MySQL 8.0+）_
+`REGEXP_SUBSTR()` | 返回匹配正则表达式的子字符串 <br>_(注意：仅 MySQL 8.0+)_
+
+### REGEXP
+
+```sql
+expr REGEXP pat 
+```
+
+#### Examples
+
+```sql
+mysql> SELECT 'abc' REGEXP '^[a-d]';
+1
+mysql> SELECT name FROM cities WHERE name REGEXP '^A';
+mysql> SELECT name FROM cities WHERE name NOT REGEXP '^A';
+mysql> SELECT name FROM cities WHERE name REGEXP 'A|B|R';
+mysql> SELECT 'a' REGEXP 'A', 'a' REGEXP BINARY 'A';
+1   0
+```
+
+### REGEXP_REPLACE
+
+```
+REGEXP_REPLACE(expr, pat, repl[, pos[, occurrence[, match_type]]])
+```
+
+#### 例子
+
+```sql
+mysql> SELECT REGEXP_REPLACE('a b c', 'b', 'X');
+a X c
+mysql> SELECT REGEXP_REPLACE('abc ghi', '[a-z]+', 'X', 1, 2);
+abc X
+```
+
+### REGEXP_SUBSTR
+
+```
+REGEXP_SUBSTR(expr, pat[, pos[, occurrence[, match_type]]])
+```
+
+#### 例子
+
+```sql
+mysql> SELECT REGEXP_SUBSTR('abc def ghi', '[a-z]+');
+abc
+mysql> SELECT REGEXP_SUBSTR('abc def ghi', '[a-z]+', 1, 3);
+ghi
+```
+
+### REGEXP_LIKE
+
+```
+REGEXP_LIKE(expr, pat[, match_type])
+```
+
+#### 例子
+
+```sql
+mysql> SELECT regexp_like('aba', 'b+')
+1
+mysql> SELECT regexp_like('aba', 'b{2}')
+0
+mysql> # i: case-insensitive
+mysql> SELECT regexp_like('Abba', 'ABBA', 'i');
+1
+mysql> # m: multi-line
+mysql> SELECT regexp_like('a\nb\nc', '^b$', 'm');
+1
+```
+
+### REGEXP_INSTR
+
+```
+REGEXP_INSTR(expr, pat[, pos[, occurrence[, return_option[, match_type]]]])
+```
+
+#### 例子
+
+```sql
+mysql> SELECT regexp_instr('aa aaa aaaa', 'a{3}');
+2
+mysql> SELECT regexp_instr('abba', 'b{2}', 2);
+2
+mysql> SELECT regexp_instr('abbabba', 'b{2}', 1, 2);
+5
+mysql> SELECT regexp_instr('abbabba', 'b{2}', 1, 3, 1);
+7
+```
+
+也可以看看
+----------
+
+- [轻松学习 Regex](https://github.com/ziishaned/learn-regex/blob/master/translations/README-cn.md) _(github.com)_
+- [正则表达式实例搜集](https://jaywcjlove.github.io/regexp-example) _(jaywcjlove.github.io)_
+- [一些正则表达式随记](https://github.com/jaywcjlove/handbook/blob/master/docs/JavaScript/RegExp.md) _(jaywcjlove.github.io)_
+RegEX 备忘清单
+===
+
+正则表达式 (regex) 的快速参考，包括符号、范围、分组、断言和一些示例模式，以帮助您入门。
+
+入门
+--------
+
+### 介绍
+
+这是开始使用正则表达式(Regex)的快速备忘单。
+
+- [Python 中的 Regex](#python-中的正则表达式) _(Quick Reference)_
+- [JavaScript 中的 Regex](#javascript-中的正则表达式) _(Quick Reference)_
+- [PHP 中的 Regex](#php中的正则表达式) _(Quick Reference)_
+- [Java 中的 Regex](#java-中的正则表达式) _(Quick Reference)_
+- [MySQL 中的 Regex](#mysql中的正则表达式) _(Quick Reference)_
+- [Vim 中的 Regex](./vim#vim-搜索和替换) _(Quick Reference)_
+- [在线 Regex 测试器](https://regex101.com/) _(regex101.com)_
+- [轻松学习 Regex](https://github.com/ziishaned/learn-regex/blob/master/translations/README-cn.md) _(github.com)_
+- [正则表达式实例搜集](https://jaywcjlove.github.io/regexp-example) _(jaywcjlove.github.io)_
+<!--rehype:className=cols-2-->
+
+### 字符类
+
+范例 | 说明
+:-|-
+`[abc]`       | 单个字符：`a`、`b` 或 `c`
+`[^abc]`      | 一个字符，除了：`a`、`b` 或 `c`
+`[a-z]`       | 范围内的字符：`a-z`
+`[^a-z]`      | 不在范围内的字符：`a-z`
+`[0-9]`       | 范围内的数字：`0-9`
+`[a-zA-Z]`    | 范围内的字符：<br>`a-z` 或 `A-Z`
+`[a-zA-Z0-9]` | 范围内的字符：<br>`a-z`、`A-Z` 或 `0-9`
+
+### 量词
+
+范例 | 说明
+:-|-
+`a?`      | 零个或一个`a`
+`a*`      | 零个或多个 `a`
+`a+`      | 一个或多个`a`
+`[0-9]+`  | `0-9`中的一个或多个
+`a{3}`    | 正好 `3` 个 `a`
+`a{3,}`   | 3个或更多的`a`
+`a{3,6}`  | `a` 的 `3` 到 `6` 之间
+`a*`      | 贪心量词
+`a*?`     | 惰性量词
+`a*+`     | 占有量词
+
+### 常用元字符
+
+- \^
+- \{
+- \+
+- \<
+- \[
+- \*
+- \)
+- \>
+- \.
+- \(
+- \|
+- \$
+- \\
+- \?
+<!--rehype:className=cols-3 style-none-->
+
+使用 `\` 转义这些特殊字符
+
+### 元序列
+<!--rehype:wrap-class=row-span-4-->
+
+范例 | 说明
+:-|-
+`.`          | 任何单个字符
+`\s`         | 任何空白字符
+`\S`         | 任何非空白字符
+`\d`         | 任何数字，与 `[0-9]` 相同
+`\D`         | 任何非数字，与 `[^0-9]` 相同
+`\w`         | 任何单词字符
+`\W`         | 任何非单词字符
+`\X`         | 任何 Unicode 序列，包括换行符
+`\C`         | 匹配一个数据单元
+`\R`         | Unicode 换行符
+`\v`         | 垂直空白字符
+`\V`         | `\v` 的否定 - 除了换行符和垂直制表符之外的任何内容
+`\h`         | 水平空白字符
+`\H`         | `\h` 的否定
+`\K`         | 重置匹配
+`\n`         | 匹配第 `n` 个子模式
+`\pX`        | `Unicode` 属性 `X`
+`\p{...}`    | `Unicode` 属性或脚本类别
+`\PX`        | `\pX` 的否定
+`\P{...}`    | `\p` 的否定
+`\Q...\E`    | 引用;视为文字
+`\k<name>`   | 匹配子模式`name`
+`\k'name'`   | 匹配子模式`name`
+`\k{name}`   | 匹配子模式`name`
+`\gn`        | 匹配第 n 个子模式
+`\g{n}`      | 匹配第 n 个子模式
+`\g<n>`      | 递归第 n 个捕获组
+`\g'n'`      | 递归第 n 个捕获组。
+`\g{-n}`     | 匹配第 n 个相对前一个子模式
+`\g<+n>`     | 递归第 n 个相对即将到来的子模式
+`\g'+n'`     | 匹配第 n 个相对即将到来的子模式
+`\g'letter'` | 递归命名捕获组 `字母`
+`\g{letter}` | 匹配先前命名的捕获组 `字母`
+`\g<letter>` | 递归命名捕获组 `字母`
+`\xYY`       | 十六进制字符 `YY`
+`\x{YYYY}`   | 十六进制字符 `YYYY`
+`\ddd`       | 八进制字符`ddd`
+`\cY`        | 控制字符 `Y`
+`[\b]`       | 退格字符
+`\`          | 使任何字符文字
+
+### 锚点
+
+范例 | 说明
+:-|-
+`\G`    | 比赛开始
+`^`     | 字符串的开始
+`$`     | 字符串结束
+`\A`    | 字符串的开始
+`\Z`    | 字符串结束
+`\z`    | 字符串的绝对结尾
+`\b`    | 一个词的边界
+`\B`    | 非单词边界
+
+### 替代
+
+范例 | 说明
+:-|-
+`\0`       | 完整的比赛内容
+`\1`       | 捕获组 `1` 中的内容
+`$1`       | 捕获组 `1` 中的内容
+`${foo}`   | 捕获组 `foo` 中的内容
+`\x20`     | 十六进制替换值
+`\x{06fa}` | 十六进制替换值
+`\t`       | 标签
+`\r`       | 回车
+`\n`       | 新队
+`\f`       | 换页
+`\U`       | 大写转换
+`\L`       | 小写转换
+`\E`       | 终止任何转换
+
+### 组构造
+
+范例 | 说明
+:-|-
+`(...)`           | 捕获所有封闭的东西
+`(a\|b)`          | 匹配 `a` 或 `b`
+`(?:...)`         | 匹配随附的所有内容
+`(?>...)`         | 原子组（非捕获）
+`(?\|...)`        | 重复的子模式组号
+`(?#...)`         | 注解
+`(?'name'...)`    | 命名捕获组
+`(?<name>...)`    | 命名捕获组
+`(?P<name>...)`   | 命名捕获组
+`(?imsxXU)`       | 内联修饰符
+`(?(DEFINE)...)`  | 在使用它们之前预定义模式
+
+### 断言
+
+:-|-
+:-|-
+`(?(1)yes\|no)`      | 条件语句
+`(?(R)yes\|no)`      | 条件语句
+`(?(R#)yes\|no)`     | 递归条件语句
+`(?(R&name)yes\|no)` | 条件语句
+`(?(?=...)yes\|no)`  | 有条件的前瞻
+`(?(?<=...)yes\|no)` | 有条件的往后看
+
+### 递归
+
+:-|-
+:-|-
+`(?R)`      | 递归整个模式
+`(?1)`      | 递归第一个子模式
+`(?+1)`     | 递归第一个相对子模式
+`(?&name)`  | 递归子模式`name`
+`(?P=name)` | 匹配子模式`name`
+`(?P>name)` | 递归子模式`name`
+
+### 标志/修饰符
+
+:-|-
+:-|-
+`g`   | 全部
+`m`   | 多行
+`i`   | 不区分大小写
+`x`   | 忽略空格
+`s`   | 单线
+`u`   | 统一码
+`X`   | 扩展
+`U`   | 不贪心
+`A`   | 锚
+`J`   | 重复的组名
+`d`   | 结果包含捕获组子字符串开始和结束的索引
+
+### 零宽度断言
+
+:-|-
+:-|-
+`(?=...)`  | 正先行断言
+`(?!...)`  | 负先行断言
+`(?<=...)` | 正后发断言
+`(?<!...)` | 负后发断言
+`?=`|正先行断言-存在
+`?!`|负先行断言-排除
+`?<=`|正后发断言-存在
+`?<!`|负后发断言-排除
+
+零宽度断言 允许您在主模式之前（向后看）或之后（lookahead）匹配一个组，而不会将其包含在结果中。
+
+### POSIX 字符类
+<!--rehype:wrap-class=col-span-2-->
+
+字符类 | 如同 | 意义
+:-|-|-
+| `[[:alnum:]]`   | `[0-9A-Za-z]`                                     | 字母和数字
+| `[[:alpha:]]`   | `[A-Za-z]`                                        | 字母
+| `[[:ascii:]]`   | `[\x00-\x7F]`                                     | ASCII 码 0-127
+| `[[:blank:]]`   | `[\t ]`                                           | 仅空格或制表符
+| `[[:cntrl:]]`   | `[\x00-\x1F\x7F]`                                 | 控制字符
+| `[[:digit:]]`   | `[0-9]`                                           | 十进制数字
+| `[[:graph:]]`   | `[[:alnum:][:punct:]]`                            | 可见字符（不是空格）
+| `[[:lower:]]`   | `[a-z]`                                           | 小写字母
+| `[[:print:]]`   | `[ -~] == [ [:graph:]]`                           | 可见字符
+| `[[:punct:]]`   | <code>[!"#$%&’()*+,-./:;<=>?@[]^_\`{\|}~]</code>  | 可见标点符号
+| `[[:space:]]`   | <code>[\t\n\v\f\r ]</code>                        | 空白
+| `[[:upper:]]`   | `[A-Z]`                                           | 大写字母
+| `[[:word:]]`    | `[0-9A-Za-z_]`                                    | 单词字符
+| `[[:xdigit:]]`  | `[0-9A-Fa-f]`                                     | 十六进制数字
+| `[[:<:]]`       | `[\b(?=\w)]`                                      | 词的开头
+| `[[:>:]]`       | `[\b(?<=\w)]`                                     | 词尾
+<!--rehype:className=show-header-->
+
+### 控制动词
+
+:-|-
+:-|-
+`(*ACCEPT)`            | 控制动词
+`(*FAIL)`              | 控制动词
+`(*MARK:NAME)`         | 控制动词
+`(*COMMIT)`            | 控制动词
+`(*PRUNE)`             | 控制动词
+`(*SKIP)`              | 控制动词
+`(*THEN)`              | 控制动词
+`(*UTF)`               | 图案修饰符
+`(*UTF8)`              | 图案修饰符
+`(*UTF16)`             | 图案修饰符
+`(*UTF32)`             | 图案修饰符
+`(*UCP)`               | 图案修饰符
+`(*CR)`                | 换行修饰符
+`(*LF)`                | 换行修饰符
+`(*CRLF)`              | 换行修饰符
+`(*ANYCRLF)`           | 换行修饰符
+`(*ANY)`               | 换行修饰符
+`\R`                   | 换行修饰符
+`(*BSR_ANYCRLF)`       | 换行修饰符
+`(*BSR_UNICODE)`       | 换行修饰符
+`(*LIMIT_MATCH=x)`     | 正则表达式引擎修饰符
+`(*LIMIT_RECURSION=d)` | 正则表达式引擎修饰符
+`(*NO_AUTO_POSSESS)`   | 正则表达式引擎修饰符
+`(*NO_START_OPT)`      | 正则表达式引擎修饰符
+
+正则表达式示例
+--------------
+
+### 字符串
+
+范例 | 说明
+:-|-
+`ring` | 匹配 <yel>ring</yel> sp<yel>ring</yel>board 等。
+`.` | 匹配 <yel>a</yel>、<yel>9</yel>、<yel>+</yel> 等。
+`h.o` | 匹配 <yel>hoo</yel>、<yel>h2o</yel>、<yel>h/o</yel> 等。
+`ring\?` | 匹配 <yel>ring?</yel>
+`\(quiet\)` | 匹配<yel>（安静）</yel>
+`c:\\windows` | 匹配 <yel>c:\windows</yel>
+
+使用 `\` 搜索这些特殊字符：<br> `[ \ ^ $ . | ? * + ( ) { }`
+
+### 速记类
+
+范例 | 说明
+:-|-
+`\w` | “单词”字符 <br> _(字母、数字或下划线)_
+`\d` | 数字
+`\s` | 空格 <br> _(空格、制表符、vtab、换行符)_
+`\W, \D, or \S` | 不是单词、数字或空格
+`[\D\S]` | 表示不是数字或空格，两者都匹配
+`[^\d\s]` | 禁止数字和空格
+
+### 出现次数
+
+范例 | 说明
+:-|-
+`colou?r`           | 匹配 <yel>color</yel> 或 <yel>color</yel>
+`[BW]ill[ieamy's]*` | 匹配 <yel>Bill</yel>、<yel>Willy</yel>、<yel>William's</yel> 等。
+`[a-zA-Z]+`         | 匹配 1 个或多个字母
+`\d{3}-\d{2}-\d{4}` | 匹配 SSN
+`[a-z]\w{1,7}`      | 匹配 UW NetID
+
+### 备择方案
+
+范例 | 说明
+:-|-
+`cat\|dog` | 匹配 <yel>cat</yel> 或 <yel>dog</yel>
+`id\|identity` | 匹配 <yel>id</yel> 或 <yel>id</yel>entity
+`identity\|id` | 匹配 <yel>id</yel> 或 <yel>identity</yel>
+
+当替代品重叠时，命令从长到短
+
+### 字符类
+
+范例 | 说明
+:-|-
+`[aeiou]`     | 匹配任何元音
+`[^aeiou]`    | 匹配一个非元音
+`r[iau]ng`    | 匹配<yel>ring</yel>、w<yel>rang</yel>le、sp<yel>rung</yel>等。
+`gr[ae]y`     | 匹配 <yel>gray</yel> 或 <yel>grey</yel>
+`[a-zA-Z0-9]` | 匹配任何字母或数字
+
+在 `[ ]` 中总是转义 `. \ ]` 有时是 `^ - .`
+
+### 贪婪与懒惰
+
+范例 | 说明
+:-|-
+`*  + {n,}`<br>_greedy_  | 尽可能匹配
+`<.+>`                | 在 <yel>\<b>bold\<\/b></yel> 中找到 1 个大匹配项
+`*?  +? {n,}?`<br>_lazy_ | 尽可能少匹配
+`<.+?>`                  | 在 \<<yel>b</yel>>bold\<<yel>\/b</yel>> 中找到 2 个匹配项
+
+### 范围
+<!--rehype:wrap-class=col-span-2-->
+
+范例 | 说明
+:-|-
+`\b` | “单词”边缘（非“单词”字符旁边）
+`\bring` | 单词以“ring”开头，例如 <yel>ringtone</yel>
+`ring\b` | 单词以“ring”结尾，例如 <yel>spring</yel>
+`\b9\b` | 匹配单个数字 <yel>9</yel>，而不是 19、91、99 等。
+`\b[a-zA-Z]{6}\b` | 匹配 6 个字母的单词
+`\B` | 不是字边
+`\Bring\B` | 匹配 <yel>springs</yel> 和 <yel>wringer</yel>
+`^\d*$` | 整个字符串必须是数字
+`^[a-zA-Z]{4,20}$` | 字符串必须有 4-20 个字母
+`^[A-Z]` | 字符串必须以大写字母开头
+`[\.!?"')]$` | 字符串必须以终端标点结尾
+
+### 修饰
+
+范例 | 说明
+:-|-
+`(?i)`[a-z]*`(?-i)` | 忽略大小写开/关
+`(?s)`.*`(?-s)`     | 匹配多行（导致 . 匹配换行符）
+`(?m)`^.*;$`(?-m)`  | <yel>^</yel> & <yel>$</yel> 匹配行不是整个字符串
+`(?x)`              | #free-spacing 模式，此 EOL 注释被忽略
+`(?-x)`             | 自由空间模式关闭
+/regex/`ismx`       | 修改整个字符串的模式
+
+### 组
+
+范例 | 说明
+:-|-
+`(in\|out)put` | 匹配 <yel>input</yel> 或 <yel>output</yel>
+`\d{5}(-\d{4})?` | 美国邮政编码 _(“+ 4”可选)_
+
+如果组后匹配失败，解析器会尝试每个替代方案。
+<br>
+可能导致灾难性的回溯。
+
+### 反向引用
+
+范例 | 说明
+:-|-
+`(to) (be) or not \1 \2` | 匹配 <yel>to be or not to be</yel>
+`([^\s])\1{2}`           | 匹配非空格，然后再相同两次 &nbsp; <yel>aaa</yel>, <yel>...</yel>
+`\b(\w+)\s+\1\b`         | 匹配双字
+
+### 非捕获组
+
+范例 | 说明
+:-|-
+`on(?:click\|load)` | 快于：`on(click\|load)`
+
+尽可能使用非捕获或原子组
+
+### 原子组
+
+范例 | 说明
+:-|-
+`(?>red\|green\|blue)` | 比非捕获更快
+`(?>id\|identity)\b`   | 匹配 <yel>id</yel>，但不匹配 <yel>id</yel>entity
+
+"id" 匹配，但 `\b` 在原子组之后失败，
+解析器不会回溯到组以重试“身份”
+
+如果替代品重叠，请从长到短命令。
+
+### 零宽度断言 Lookaround(前后预查)
+<!--rehype:wrap-class=col-span-2 row-span-2-->
+
+范例 | 说明
+:-|-
+`(?= )`                 | 向前看，如果你能提前找到
+`(?! )`                 | 向前看，如果你找不到前面
+`(?<= )`                | 向后看，如果你能找到后面
+`(?<! )`                | 向后看，如果你找不到后面
+`\b\w+?(?=ing\b)`       | 匹配 <yel>warbl</yel>ing, <yel>str</yel>ing, <yel>fish</yel>ing, ...
+`\b(?!\w+ing\b)\w+\b`   | 不以“ing”结尾的单词
+`(?<=\bpre).*?\b`      | 匹配 pre<yel>tend</yel>、pre<yel>sent</yel>、pre<yel>fix</yel>、...
+`\b\w{3}(?<!pre)\w*?\b` | 不以“pre”开头的词
+`\b\w+(?<!ing)\b`       | 匹配不以“ing”结尾的单词
+
+### If-then-else
+
+匹配 `Mr.` 或 `Ms.` 如果单词 `her` 稍后在字符串中
+
+```
+M(?(?=.*?\bher\b)s|r)\.
+```
+
+需要环顾 `IF` 条件
+
+基础实例
 ---
-### 字符分类
-#### 普通字符
-字母、数字、汉字、下划线、以及后边章节中没有特殊定义的标点符号，都是"普通字符"。
-
-#### 简单的转义字符
-
-表达式 | 可匹配
--- | -- |--
- \r, \n| 代表回车和换行符
- \t    | 制表符
- \\    | 代表 "\" 本身
-
-还有其他元字符， 在`前面加 "\" 后`，就代表该符号本身
-
- 表达式 | 可匹配
- --     |  --
- `\^`    |  匹配 ^ 符号本身
- `\$`  |  匹配 $ 符号本身
- `\.`     |  匹配小数点（.）本身
-
-`举例1：` 表达式 "\$d"，在匹配字符串 "abc$de" 时 ，匹配结果是：成功；匹配到的内容是："$d"；匹配到的位置是：开始于3，结束于5。
-
-#### 元字符
-分类：
-* 单个字符集、自定义字符集合
-* 字符次数限定符
-* 边界界定符
-* 匹配引用
-
-##### 字符集
-**匹配 '多种字符' 其中的任意一个字符**
-
- 表达式 | 可匹配
- --     |  --
- \d    | 任意一个数字，0~9 中的任意一个
- \w   | 任意一个字母或数字或下划线，也就是 A~Z,a~z,0~9, \_ 中任意一个
- \s   | 包括空格、制表符、换页符等空白字符的其中任意一个
- .    |  小数点可以匹配除了换行符（\n）以外的任意一个字符
-
-`举例1：` 表达式 "\d\d "，在匹配 "abc123" 时 ，匹配的结果是：成功；匹配到的内容是："12"；匹配到的位置是：开始于3，结束于5。
-
-##### 自定义字符集
-**自定义能够匹配 '多种字符' 的任意一个字符**
-
- 表达式 | 可匹配
- --    |  --
- [ab5@] | 匹配 "a" 或 "b" 或 "5" 或 "@"
- [^abc] | 匹配 "a","b","c" 之外的任意一个字符
- [f-k] | 匹配 "f"~"k" 之间的任意一个字母
- [^A-F0-3]|匹配 "A"~"F","0"~"3" 之外的任意一个字符
-`举例1：`表达式 " [bcd] [bcd] " 匹配 "abc123" 时 ，匹配的结果是：成功；匹配到内容是："bc"；匹配的位置是：开始于1，结束于3。
-`举例2：`表达式 " [^abc] " 匹配 "abc123" 时 ，匹配的结果是：成功；匹配到的内容是："1"；匹配到的位置是：开始于3，结束于4。
-
-##### 次数限定符
-**修饰匹配次数的特殊符号**
-使用方法是："次数修饰"放在"被修饰的表达式"后边。
-
- 表达式|作用
---|--
-{n}|表达式重复n次，比如：  "\w{2}" 相当于 "\w\w" ；  "a{5}" 相当于 "aaaaa"
-{m,n}|表达式至少重复m次，最多重复n次，比如：  "ba{1,3}"可以匹配 "ba"或"baa"或"baaa"
- {m,} | 表达式至少重复m次，比如：  "\w\d{2,}"可以匹配 "a12","\_456","M12344"...
- ? | 出现零次或一次，最多一次，相当于 {0,1}，比如：  "a[cd]?"可以匹配 "a","ac","ad"
- + | 表达式至少出现1次，相当于 {1,}，比如：  "a+b"可以匹配 "ab","aab","aaab"...
- \* | 出现任意次（零次、一次、多次），相当于 {0,}，比如：  "\^*b"可以匹配 "b","^^^b"...
-
-`举例1：` 表达式 " \d + \. ? \d * " 在匹配 "It costs $12.5" 时 ，匹配的结果是：成功；匹配到的内容是："12.5"；匹配到的位置是：开始于10，结束于14。
-`举例2：` 表达式 " go {2,8} gle " 在匹配 "Ads by goooooogle" 时 ，匹配的结果是：成功；匹配到的内容是："goooooogle"；匹配到的位置是：开始于7，结束于17。
 
-##### 边界（位置）界定符
-其他一些代表抽象意义的特殊符号
+### 基本匹配
 
-表达式|作用
- -- |--
- ^  | 与字符串开始的地方匹配，不匹配任何字符
- $ | 与字符串结束的地方匹配，不匹配任何字符
- \b | 匹配一个单词边界，也就是单词和空格之间的位置，不匹配任何字符
-\1 \2 ..\7 |标识一个八进制转义码或反向引用。如果 \n前面至少有n个捕获子表达式，那么 _n_ 是反向引用。否则，如果n是八进制数 (0-7)，那么n是八进制转义码。
+表达式 | 匹配示例
+:- | -
+`the` | The fat cat sat on `the` mat.
+`The` | `The` fat cat sat on the mat.
+<!--rehype:className=show-header-->
 
-`举例1：` 表达式 `^aaa` 在匹配 "xxxaaa xxx" 时 ，匹配结果是：失败。因为 "^" 要求与字符串开始的地方匹配，因此，只有当 "aaa" 位于字符串的开头的时候，"^aaa" 才能匹配， 比如："aaaxxxxxx" 。
-`举例2：` 表达式 `aaa$` 在匹配 "xxx aaa xxx" 时 ，匹配结果是：失败。因为 "$" 要求与字符串结束的地方匹配，因此，只有当 "aaa" 位于字符串的结尾的时候，"aaa$" 才能匹配， 比如："xxx xxx aaa" 。
-`举例3：` 表达式 " `.\b.`" 在匹配 "@@@abc" 时 ，匹配结果是：成功；匹配到的内容是："@a"；匹配到的位置是：开始于2，结束于4。
+由字母`t`开始，接着是`h`，再接着是`e`
 
-进一步说明：
-```
-"\b" 与 "^" 和 "$" 类似，本身不匹配任何字符，但是它要求它在匹配结果中所处位置的左右两边，其中一边是 "\w" 范围，另一边是 非"\w" 的范围。
-```
+### 点运算符 `.`
 
-`举例4：` 表达式 " \b end \b " 在匹配 "weekend,endfor,end" 时 ，匹配结果是：成功；匹配到的内容是："end"；匹配到的位置是：开始于15，结束于18。
+表达式 | 匹配示例
+:- | -
+`.ar` | The `car` `par`ked in the `gar`age.
+<!--rehype:className=show-header-->
 
+表达式`.ar`匹配一个任意字符后面跟着是`a`和`r`的字符串
 
-一些符号可以影响表达式内部的子表达式之间的关系：
+### 字符集
 
- 表达式|作用
---| --
- 竖线 | 左右两边表达式之间 "或" 关系，匹配左边或者右边
- ( ) | (1). 在被修饰匹配次数的时候，括号中的表达式可以作为整体被修饰  (2). `取匹配结果`的时候，括号中的表达式匹配到的内容可以被单独得到
+表达式 | 匹配示例
+:- | -
+`.ar` | The `car` <pur>`par`</pur>ked in the `gar`age.
+`ar[.]` | A garage is a good place to park a c`ar`.
+<!--rehype:className=show-header-->
 
-`举例5：` 表达式 " Tom | Jack " 在匹配字符串 "I'm Tom, he is Jack" 时 ，匹配结果是：成功；匹配到的内容是："Tom"；匹配到的位置是：开始于4，结束于7。匹配下一个时，匹配结果是：成功；匹配到的内容是："Jack"；匹配到的位置时：开始于15，结束于19。
+方括号的句号就表示句号。表达式 `ar[.]` 匹配 `ar.` 字符串
 
-`举例6：` 表达式 " ( go \s * ) + " 在匹配 "Let's go go go!" 时 ，匹配结果是：成功；匹配到内容是："go go go"；匹配到的位置是：开始于6，结束于14。
+### 否定字符集
 
-`举例7：` 表达式 " ￥ ( \d + \. ? \d * ) " 在匹配 "＄10.9,￥20.5" 时 ，匹配的结果是：成功；匹配到的内容是："￥20.5"；匹配到的位置是：开始于6，结束于10。单独获取括号范围匹配到的内容是："20.5"。
+表达式 | 匹配示例
+:- | -
+`[^c]ar` | The car `par`ked in the `gar`age.
+<!--rehype:className=show-header-->
 
-##### 字符集以外
- 表达式 | 可匹配
- -- | --
- \S | 匹配所有非空白字符（"\s" 可匹配各个空白字符）
- \D | 匹配所有的非数字字符
- \W | 匹配所有的字母、数字、下划线以外的字符
- \B | 匹配非单词边界，即左右两边都是 "\w" 范围或者左右两边都不是 "\w" 范围时的字符缝隙
-[^x] | 匹配非x字符
-[^aeiou] | 匹配非a、e、i、o、u字符
+表达式 `[^c]ar` 匹配一个后面跟着 `ar` 的除了`c`的任意字符。
 
-##### 引用匹配到的字符串
+### 重复次数
+<!--rehype:wrap-class=row-span-2-->
 
-符号|释义
---|--
- $1、$2、...、$99 | 与 regexp 中的第 1 到第 99 个子表达式相匹配的文本。 |
- $& | 与 regexp 相匹配的子串。 |
- $` | 位于匹配子串左侧的文本。 |
- $' | 位于匹配子串右侧的文本。 |
- `$$` | 直接量符号。 |
+#### `*` 号
 
-### 高级规则--匹配次数中的贪婪与非贪婪
----
-#### 贪婪模式
-在使用修饰匹配次数的特殊符号时，有几种表示方法可以使同一个表达式能够匹配不同的次数，比如："{m,n}", "{m,}", "?", "\*", "+"，具体匹配的次数随被匹配的字符串而定。这种 重复匹配不定次数的表达式在匹配过程中，总是尽可能多的匹配 。比如，`针对文本 "dxxxdxxxd"`，举例如下：
+表达式 | 匹配示例
+:- | -
+`[a-z]*` | T`he` <pur>`car`</pur> `parked` <pur>`in`</pur> `the` <pur>`garage`</pur> #21.
+`\s*cat\s*` | The fat `cat` sat on the con`cat`enation.
 
- 表达式 | 匹配结果
- -- | --
- (d)(\w+) | "\w+" 将匹配第一个 "d" 之后的所有字符 "xxxdxxxd"
-(d)(\w+)(d) | "\w+" 将匹配第一个 "d" 和最后一个 "d" 之间的所有字符 "xxxdxxx"。虽然 "\w+" 也能够匹配上最后一个 "d"，但是为了使整个表达式匹配成功，"\w+" 可以 "让出" 它本来能够匹配的最后一个 "d"
+表达式 `[a-z]*` 匹配一个行中所有以小写字母开头的字符串。
 
-由此可见，"\w+" 在匹配的时候，总是尽可能多的匹配符合它规则的字符。虽然第二个举例中，它没有匹配最后一个 "d"，但那也是为了让整个表达式能够匹配成功。同理，带 "\*" 和 "{m,n}" 的表达式都是尽可能地多匹配， 带 "?" 的表达式在可匹配可不匹配的时候，也是尽可能的 "要匹配 "。这种匹配原则就叫作 `贪婪模式`。
+#### `+` 号
 
-#### 非贪婪模式（最小匹配）
-在修饰匹配次数的特殊符号后再加上一个 "?" 号 ，则可以使匹配次数不定的表达式尽可能少的匹配，使可匹配可不匹配的表达式，尽可能的 "不匹配"。这种匹配原则叫作 "非贪婪" 模式，也叫作 "勉强" 模式。如果少匹配就会导致整个表达式匹配失败的时候，与贪婪模式类似，非贪婪模式会最小限度的再匹配一些，以使整个表达式匹配成功。举例如下，针对文本 "dxxxdxxxd" 举例：
+表达式 | 匹配示例
+:- | -
+`c.+t` | The `fat cat sat on the mat`.
 
- 表达式 | 匹配结果
- --  |  --
-(d)(\w+?)  |"\w+?" 将尽可能少的匹配第一个 "d" 之后的字符，结果是："\w+?" 只匹配了一个 "x"
-(d) (\w+?)(d)  | 为了让整个表达式匹配成功，"\w+?" 不得不匹配 "xxx" 才可以让后边的 "d" 匹配，从而使整个表达式匹配成功。因此，结果是："\w+?" 匹配 "xxx"
+表达式 `c.+t` 匹配以首字母c开头以t结尾，中间跟着至少一个字符的字符串。
 
+#### `?` 号
 
-```
-`举例1：`
-表达式"<td> ( . * ) </td> " 与字符串 "<td><p>aa</p></td> <td><p>bb</p></td>" 匹配时 ，匹配的结果是：成功；匹配到的内容是 "<td><p>aa</p></td> <td><p>bb</p></td>" 整个字符串， 表达式中的 "</td>" 将与字符串中最后一个 "</td>" 匹配。 
-`举例2：` 相比之下，表达式 " <td> ( . * ? ) </td> " 匹配举例1中同样的字符串时 ，将只得到 "<td><p>aa</p></td>"， 再次匹配下一个时，可以得到第二个 "<td><p>bb</p></td>"。
-````
-（2）、反向引用 \1, \2...
-  表达式在匹配时，表达式引擎会将小括号 "( )" 包含的表达式所匹配到的字符串记录下来。在获取匹配结果的时候，小括号包含的表达式所匹配到的字符串可以单独获取。这一点，在前面的举例中，已经多次展示了。在实际应用场合中，当用某种边界来查找，而所要获取的内容又不包含边界时，必须使用小括号来指定所要的范围。比如前面的 " <td> ( . * ? ) </td> "。
+表达式 | 匹配示例
+:- | -
+`[T]he` | `The` car is parked in the garage.
+`[T]?he` | `The` car is parked in t`he` garage.
 
- 其实，"小括号包含的表达式所匹配到的字符串" 不仅是在匹配结束后才可以使用，在匹配过程中也可以使用。表达式后边的部分，可以引用前面 "括号内的子匹配已经匹配到的字符串"。引用方法是 "\" 加上一个数字。"\1" 引用第1对括号内匹配到的字符串，"\2" 引用第2对括号内匹配到的字符串……以此类推，如果一对括号内包含另一对括号，则外层的括号先排序号。换句话说，哪一对的左括号 "(" 在前，那这一对就先排序号。
+表达式 `[T]?he` 匹配字符串 `he` 和 `The`。
 
-举例如下：
-`举例1：`表达式 " ( ' | " ) ( . * ? ) ( \1 ) " 在匹配 " 'Hello', "World" " 时 ，匹配结果是：成功；匹配到的内容是：" 'Hello' "。再次匹配下一个时，可以匹配到 " "World" "。
-`举例2：`表达式 " ( \w ) \1 {4,} " 在匹配 "aa bbbb abcdefg ccccc 111121111 999999999" 时 ，匹配结果是：成功；匹配到的内容是 "ccccc"。再次匹配下一个时，将得到 999999999。这个表达式要求 "\w" 范围的字符至少重复5次，   注意与 "\w{5,}" 之间的区别 。
+### `{}` 号
 
+表达式 | 匹配示例
+:- | -
+`[0-9]{2,3}` | The number was 9.`999`7 but we rounded it off to `10`.0.
+`[0-9]{2,}` | The number was 9.`9997` but we rounded it off to `10`.0.
+`[0-9]{3}` | The number was 9.`999`7 but we rounded it off to 10.0.
+<!--rehype:className=style-list-arrow-->
 
- 举例3：表达式 " < ( \w + ) \s * ( \w + ( = ( ' | " ) . * ? \4 ) ? \s * ) * > . * ? </ \1 > " 在匹配 "<td id='td1' style="bgcolor:white"></td>" 时 ，匹配结果是成功。如果 "<td>" 与 "</td>" 不配对，则会匹配失败；如果改成其他配对，也可以匹配成功。
+### `(...)` 特征标群
 
+表达式 | 匹配示例
+:- | -
+`(c\|g\|p)ar` | The `car` is `par`ked in the `gar`age.
+<!--rehype:className=show-header-->
 
-(3)、 预搜索，不匹配；反向预搜索，不匹配
-  前面的章节中，我讲到了几个代表抽象意义的特殊符号："^"，"$"，"\b"。它们都有一个共同点，那就是：它们本身不匹配任何字符，只是对 "字符串的两头" 或者 "字符之间的缝隙" 附加了一个条件。
+表达式 `(c|g|p)ar` 匹配 `car` 或 `gar` 或 `par`。 注意 `\` 是在 Markdown 中为了不破坏表格转义 `|`。
 
-理解到这个概念以后，本节将继续介绍另外一种对 "两头" 或者 "缝隙" 附加条件的，更加灵活的表示方法。
+### `|` 或运算符
 
-    正向预搜索："(?=xxxxx)"，"(?!xxxxx)"
+表达式 | 匹配示例
+:- | -
+`(T\|t)he\|car` | The car is parked in the garage.
+<!--rehype:className=show-header-->
 
-格式："(?=xxxxx)"，在被匹配的字符串中，它对所处的 "缝隙" 或者 "两头" 附加的条件是：所在缝隙的右侧，必须能够匹配上 xxxxx 这部分的表达式。因为它只是在此作为这个缝隙上附加的条件，所以它并不影响后边的表达式去真正匹配这个缝隙之后的字符。这就类似 "\b"，本身不匹配任何字符。"\b" 只是将所在缝隙之前、之后的字符取来进行了一下判断，不会影响后边的表达式来真正的匹配。
-举例1：表达式 " Windows  (?= NT | XP ) " 在匹配 "Windows 98, Windows NT, Windows 2000" 时 ，将只匹配 "Windows NT" 中的 "Windows "，其他的 "Windows " 字样则不被匹配。
- 举例2：表达式 " ( \w ) ( (?= \1 \1 \1 ) ( \1 ) ) + " 在匹配字符串 "aaa ffffff 999999999" 时 ，将可以匹配6个"f"的前4个，可以匹配9个"9"的前7个。这个表达式可以读解成：重复4次以上的字母数字，则匹配其剩下最后2位之前的部分。当然，这个表达式可以不这样写，在此的目的是作为演示之用。
+表达式 `(T|t)he|car` 匹配 `(T|t)he` 或 `car`
 
-    格式："(?!xxxxx)"，所在缝隙的右侧，必须不能匹配 xxxxx 这部分表达式。
+### 转码特殊字符
 
+表达式 | 匹配示例
+:- | -
+`(f\|c\|m)at\.?` | The `fat` `cat` sat on the `mat.`
+<!--rehype:className=show-header-->
 
+如果想要匹配句子中的 `.` 则要写成 `\.` 以下这个例子 `\.?` 是选择性匹配.
 
- 举例3：表达式 " ( (?! \b stop \b ) . ) + " 在匹配 "fdjka ljfdl stop fjdsla fdj" 时 ，将从头一直匹配到 "stop" 之前的位置，如果字符串中没有 "stop"，则匹配整个字符串。
+### 锚点
+<!--rehype:wrap-class=row-span-2-->
 
+匹配指定开头或结尾的字符串就要使用到锚点。
 
+#### `^` 号 (符串的开头)
 
-举例4：表达式 " do (?! \w ) " 在匹配字符串 "done, do, dog" 时 ，只能匹配 "do"。在本条举例中，"do" 后边使用 "(?!\w)" 和使用 "\b" 效果是一样的。
+表达式 | 匹配示例
+:- | -
+`(T\|t)he` | `The` car is parked in `the` garage.
+`^(T\|t)he` | `The` car is parked in the garage.
+<!--rehype:className=show-header-->
 
-反向预搜索："(?<=xxxxx)"，"(?<!xxxxx)"
+#### `$` 号 (否是最后一个)
 
-    这两种格式的概念和正向预搜索是类似的，反向预搜索要求的条件是：所在缝隙的 "左侧"，两种格式分别要求必须能够匹配和必须不能够匹配指定表达式，而不是去判断右侧。与 "正向预搜索" 一样的是：它们都是对所在缝隙的一种附加条件，本身都不匹配任何字符。
+表达式 | 匹配示例
+:- | -
+`(at\.)` | The fat c`at.` s`at.` on the m`at.`
+`(at\.)$` | The fat cat. sat. on the m`at.`
+<!--rehype:className=show-header-->
 
-    举例5：表达式 " (?<= \d {4} ) \d + (?= \d {4} ) " 在匹配 "1234567890123456" 时，将匹配除了前4个数字和后4个数字之外的中间8个数字。由于 JScript.RegExp 不支持反向预搜索，因此，本条举例不能够进行演示。很多其他的引擎可以支持反向预搜索，比如：Java 1.4 以上的 java.util.regex 包，.NET 中System.Text.RegularExpressions 命名空间，以及本站推荐的 最简单易用的 DEELX 正则引擎 。
+### 简写字符集
+<!--rehype:wrap-class=row-span-4-->
 
+|简写|描述|
+|:----:|----|
+|`.`|除换行符外的所有字符|
+|`\w`|匹配所有字母数字<br />等同于 `[a-zA-Z0-9_]`|
+|`\W`|匹配所有非字母数字，即符号<br />等同于： `[^\w]`|
+|`\d`|匹配数字： `[0-9]`|
+|`\D`|匹配非数字： `[^\d]`|
+|`\s`|匹配所有空格字符<br />等同于：`[\t\n\f\r\p{Z}]`|
+|`\S`|匹配所有非空格字符： `[^\s]`|
+|`\f`|匹配一个换页符|
+|`\n`|匹配一个换行符|
+|`\r`|匹配一个回车符|
+|`\t`|匹配一个制表符|
+|`\v`|匹配一个垂直制表符|
+|`\p`|匹配 CR/LF(等同于 `\r\n`)<br />用来匹配 DOS 行终止符|
+<!--rehype:className=show-header-->
 
-3 其他通用规则
-还有一些在各个正则表达式引擎之间比较通用的规则，在前面的讲解过程中没有提到。
+正则表达式提供一些常用的字符集简写。
 
-（1） 表达式中，可以使用 "\xXX" 和 "\uXXXX" 表示一个字符（"X" 表示一个十六进制数）
+### `?=...` 正先行断言
 
- 形式 | 字符范围
- --|--
- \xXX | 编号在 0 ~ 255 范围的字符，比如： 空格可以使用 "\x20" 表示
- \uXXXX | 任何字符可以使用 "\u" 再加上其编号的4位十六进制数表示，比如： "\u4E2D"
+表达式 | 匹配示例
+:- | -
+`(T\|t)he(?=\sfat)` | `The` fat cat sat on the mat.
+<!--rehype:className=show-header-->
 
+`The` 和 `the` 后面紧跟着 `(空格)fat`。
 
+### `?!...` 负先行断言
 
+表达式 | 匹配示例
+:- | -
+`(T\|t)he(?!\sfat)` | The fat cat sat on `the` mat.
+<!--rehype:className=show-header-->
 
-3.2 在表达式中有特殊意义，需要添加 "\" 才能匹配该字符本身的字符汇总
+匹配 `The` 和 `the`，且其后不跟着 `(空格)fat`。
 
- 字符|说明
- --|--
- ^ | 匹配输入字符串的开始位置。要匹配 "^" 字符本身，请使用 "\^"
- \$  | 匹配输入字符串的结尾位置。要匹配 "$" 字符本身，请使用 "\$"
- ( ) | 标记一个`子表达式`的开始和结束位置。要匹配小括号，请使用 "\(" 和 "\)"
- [ ] | 用来自定义能够匹配 '多种字符' 的表达式。要匹配中括号，请使用 "\[" 和 "\]"
- { } | 修饰匹配次数的符号。要匹配大括号，请使用 "\{" 和 "\}"
- . | 匹配除了换行符（\n）以外的任意一个字符。要匹配小数点本身，请使用 "\."
- ? | 修饰匹配次数为 0 次或 1 次。要匹配 "?" 字符本身，请使用 "\?"
- + | 修饰匹配次数为至少 1 次。要匹配 "+" 字符本身，请使用 "\+"
- \* | 修饰匹配次数为 0 次或任意次。要匹配 "\*" 字符本身，请使用 "\*"
- 竖线 |左右两边表达式之间 "或" 关系。匹配 `竖线` 本身，请使用 `竖线`
+### `?<= ...` 正后发断言
 
+表达式 | 匹配示例
+:- | -
+`(?<=(T\|t)he\s)(fat\|mat)` | The `fat` cat sat on the `mat`.
+<!--rehype:className=show-header-->
 
-**如何修改子匹配**
+匹配 `fat` 和 `mat`，且其前跟着 `The` 或 `the`。
 
+### `?<!...` 负后发断言
 
-```
-var s1 = "foo-style-css";
-s1 = s1.replace(/-(\w)/g, function(all, letter){
- console.log(arguments)
- return letter.toUpperCase();
-});
-```
+表达式 | 匹配示例
+:- | -
+`(?<!(T\|t)he\s)(cat)` | The cat sat on `cat`.
+<!--rehype:className=show-header-->
 
+匹配 `cat`，且其前不跟着 `The` 或 `the`。
 
+### 忽略大小写 (Case Insensitive)
 
-| compare  |  des |
-| ------------ | ------------ |
-|(?=X)   |  匹配任何其后紧接指定字符串 n 的字符串 |
-|(?:X)   | `(X)`和`(?:X)`，前者是捕获分组，后者不获  |
+表达式 | 匹配示例
+:- | -
+`The` | The `fat` cat sat on the mat.
+`/The/gi` | `The` fat cat sat on `the` mat.
+<!--rehype:className=show-header-->
 
-```
-/(\w)(?=\1{3,})/.test("AAAAAAAA") //true
-/(\w)(?=\1{3,})/.test("AAAB") //false
+修饰语 `i` 用于忽略大小写，`g` 表示全局搜索。
 
+### 全局搜索 (Global search)
 
-var m = "abcabc".match(/(?:a)(b)(c)/)
-//结果 ["abc", "b", "c"]
-// m[0] 是/(?:a)(b)(c)/匹配到的整个字符串，这里包括了a
-// m[1] 是捕获组1，即(b)匹配的子字符串substring or sub sequence
-// m[2] 是捕获组2，即(c)匹配到的
+表达式 | 匹配示例
+:- | -
+`/.(at)/` | The `fat` cat sat on the mat.
+`/.(at)/g` | The `fat` `cat` `sat` on the `mat`.
+<!--rehype:className=show-header-->
+
+表达式 `/.(at)/g` 表示搜索 任意字符（除了换行）+ `at`，并返回全部结果。
+
+### 多行修饰符 (Multiline)
+
+表达式 | 匹配示例
+:- | -
+`/.at(.)?$/` | The fat<br /> cat sat<br /> on the `mat`.
+`/.at(.)?$/gm` | The `fat`<br /> cat `sat`<br /> on the `mat`.
+<!--rehype:className=show-header-->
+
+### 贪婪匹配与惰性匹配 (Greedy vs lazy matching)
+
+表达式 | 匹配示例
+:- | -
+`/(.*at)/` | `The fat cat sat on the mat`.
+`/(.*?at)/` | `The fat` cat sat on the mat.
+<!--rehype:className=show-header-->
+
+Python 中的正则表达式
+---------------
+
+### 入门
+
+导入正则表达式模块
+
+```python
+import re
 ```
 
+### 实例
+<!--rehype:wrap-class=col-span-2 row-span-3-->
 
-### 练习
-- [闯关模式练习正则表达式，完成一个个正则匹配的测验](http://regex.alf.nu)
-- [通过实际练习掌握正则表达式](http://regexone.com/) 
-- [正则挑战，有不同难度，很丰富](https://regexcrossword.com/)
-- [正则挑战，完成正则匹配要求](http://callumacrae.github.io/regex-tuesday/)
+#### re.search()
+
+```python
+>>> sentence = 'This is a sample string'
+>>> bool(re.search(r'this', sentence, flags=re.I))
+True
+>>> bool(re.search(r'xyz', sentence))
+False
+```
+
+#### re.findall()
+
+```python
+>>> re.findall(r'\bs?pare?\b', 'par spar apparent spare part pare')
+['par', 'spar', 'spare', 'pare']
+>>> re.findall(r'\b0*[1-9]\d{2,}\b', '0501 035 154 12 26 98234')
+['0501', '154', '98234']
+```
+
+#### re.finditer()
+
+```python
+>>> m_iter = re.finditer(r'[0-9]+', '45 349 651 593 4 204')
+>>> [m[0] for m in m_iter if int(m[0]) < 350]
+['45', '349', '4', '204']
+```
+
+#### re.split()
+
+```python
+>>> re.split(r'\d+', 'Sample123string42with777numbers')
+['Sample', 'string', 'with', 'numbers']
+```
+
+#### re.sub()
+
+```python
+>>> ip_lines = "catapults\nconcatenate\ncat"
+>>> print(re.sub(r'^', r'* ', ip_lines, flags=re.M))
+* catapults
+* concatenate
+* cat
+```
+
+#### re.compile()
+
+```python
+>>> pet = re.compile(r'dog')
+>>> type(pet)
+<class '_sre.SRE_Pattern'>
+>>> bool(pet.search('They bought a dog'))
+True
+>>> bool(pet.search('A cat crossed their path'))
+False
+```
+
+### 函数
+
+函数 | 说明
+:-|-
+`re.findall`  | 返回包含所有匹配项的列表
+`re.finditer` | 返回一个可迭代的匹配对象<br/> _(每个匹配一个)_
+`re.search`   | 如果字符串中的任何位置存在匹配项，则返回 Match 对象
+`re.split`    | 返回一个列表，其中字符串在每次匹配时被拆分
+`re.sub`      | 用字符串替换一个或多个匹配项
+`re.compile`  | 编译正则表达式模式供以后使用
+`re.escape`   | 返回所有非字母数字反斜杠的字符串
+
+### Flags 标志
+
+:- | - | -
+:- | - | -
+`re.I` | `re.IGNORECASE` | 忽略大小写
+`re.M` | `re.MULTILINE`  | 多行
+`re.L` | `re.LOCALE`     | 使 `\w`、`\b`、`\s` _locale 依赖_
+`re.S` | `re.DOTALL`     | 点匹配所有 _（包括换行符）_
+`re.U` | `re.UNICODE`    | 使 `\w`、`\b`、`\d`、`\s` _unicode 依赖_
+`re.X` | `re.VERBOSE`    | 可读风格
+
+JavaScript 中的正则表达式
+---------------
+
+### RegExp
+<!--rehype:wrap-class=row-span-4-->
+
+#### 属性
+
+:- | :-
+:- | :-
+`dotAll` | 是否使用了 `s` 修饰符
+`flags` | 返回标志的字符串
+`global` | 是否使用了 `g` (全部)修饰符
+`hasIndices` | 是否使用了 `d` 修饰符
+`ignoreCase` | 匹配文本的时候是否忽略大小写 `i`
+`multiline` | 是否进行多行搜索 `m`
+`lastIndex` | 该索引表示从哪里开始下一个匹配
+`source` | 正则表达式的文本
+`sticky` | 搜索是否是 sticky
+`unicode` | Unicode 功能是否开启
+
+#### 方法
+
+:- | :-
+:- | :-
+`match()` | 获取匹配结果
+`matchAll()` | 所有匹配项
+`replace()` | 替换所有符合正则模式的匹配项
+`search()` | 搜索以取得匹配正则模式的项
+`split()` | 切割字符串返回字符串数组
+~~`compile()`~~ | （重新）编译正则表达式
+`exec()` | 指定字符串中执行一个搜索匹配
+`test()` | 正则表达式与指定的字符串是否匹配
+`toString()` | 返回该正则表达式的字符串
+
+### test()
+
+```javascript
+let textA = 'I like APPles very much';
+let textB = 'I like APPles';
+let regex = /apples$/i
+ 
+console.log(regex.test(textA)); // false
+console.log(regex.test(textB)); // true
+```
+
+### search()
+
+```javascript
+let text = 'I like APPles very much';
+let regexA = /apples/;
+let regexB = /apples/i;
+
+console.log(text.search(regexA)); // -1
+console.log(text.search(regexB)); // 7
+```
+
+### exec()
+
+```javascript
+let text = 'Do you like apples?';
+let regex= /apples/;
+// Output: apples
+console.log(regex.exec(text)[0]);
+// Output: Do you like apples?
+console.log(regex.exec(text).input);
+```
+
+### match()
+
+```javascript
+let text = 'Here are apples and apPleS';
+let regex = /apples/gi;
+ 
+// Output: [ "apples", "apPleS" ]
+console.log(text.match(regex));
+```
+
+### split()
+<!--rehype:wrap-class=col-span-2-->
+
+```javascript
+let text = 'This 593 string will be brok294en at places where d1gits are.';
+let regex = /\d+/g
+ 
+// Output: [ "This ", " string will be brok", "en at places where d", "gits are." ] 
+console.log(text.split(regex))
+```
+
+### matchAll()
+
+```javascript
+let regex = /t(e)(st(\d?))/g;
+let text = 'test1test2';
+let array = [...text.matchAll(regex)];
+// Output: ["test1", "e", "st1", "1"]
+console.log(array[0]);
+// Output: ["test2", "e", "st2", "2"]
+console.log(array[1]);
+```
+
+### replace()
+
+```javascript
+let text = 'Do you like aPPles?';
+let regex = /apples/i
+ 
+// Output: Do you like mangoes?
+let result = text.replace(regex, 'mangoes');
+console.log(result);
+```
+
+### 属性示例
+
+```javascript
+/d/s.dotAll;             // => true
+/d/g.global;             // => true
+/d/ig.flags;             // => "gi"
+/d/d.hasIndices;         // => true
+/d/i.ignoreCase;         // => true
+```
+
+### 多行文本中使用正则表达式
+
+```js
+let s = "Please yes\nmake my day!";
+
+s.match(/yes[^]*day/);
+// 返回 'yes\nmake my day'
+```
+
+### replaceAll()
+
+```javascript
+let regex = /apples/gi;
+let text = 'Here are apples and apPleS';
+
+text.replaceAll(regex, "mangoes");
+// 返回: Here are mangoes and mangoes
+```
+<!--rehype:className=wrap-text-->
+
+PHP中的正则表达式
+------------
+
+### 函数
+<!--rehype:wrap-class=col-span-2-->
+
+:- | -
+:- | -
+`preg_match()`            | 执行正则表达式匹配
+`preg_match_all()`        | 执行全局正则表达式匹配
+`preg_replace_callback()` | 使用回调执行正则表达式搜索和替换
+`preg_replace()`          | 执行正则表达式搜索和替换
+`preg_split()`            | 按正则表达式模式拆分字符串
+`preg_grep()`             | 返回与模式匹配的数组条目
+
+### preg_replace
+
+```php
+$str = "Visit Microsoft!";
+$regex = "/microsoft/i";
+
+// Output: Visit QuickRef!
+echo preg_replace($regex, "QuickRef", $str); 
+```
+<!--rehype:className=wrap-text-->
+
+### preg_match
+
+```php
+$str = "Visit QuickRef";
+$regex = "#quickref#i";
+// Output: 1
+echo preg_match($regex, $str);
+```
+
+### preg_matchall
+<!--rehype:wrap-class=col-span-2 row-span-2-->
+
+```php
+$regex = "/[a-zA-Z]+ (\d+)/";
+$input_str = "June 24, August 13, and December 30";
+if (preg_match_all($regex, $input_str, $matches_out)) {
+    // Output: 2
+    echo count($matches_out);
+    // Output: 3
+    echo count($matches_out[0]);
+    // Output: Array("June 24", "August 13", "December 30")
+    print_r($matches_out[0]);
+    // Output: Array("24", "13", "30")
+    print_r($matches_out[1]);
+}
+```
+
+### preg_grep
+
+```php
+$arr = ["Jane", "jane", "Joan", "JANE"];
+$regex = "/Jane/";
+// Output: Jane
+echo preg_grep($regex, $arr);
+```
+
+### preg_split
+<!--rehype:wrap-class=col-span-2-->
+
+```php
+$str = "Jane\tKate\nLucy Marion";
+$regex = "@\s@";
+// Output: Array("Jane", "Kate", "Lucy", "Marion")
+print_r(preg_split($regex, $str));
+```
+
+Java 中的正则表达式
+-------------
+
+### 风格
+<!--rehype:wrap-class=col-span-2-->
+
+#### 第一种方式
+
+```java
+Pattern p = Pattern.compile(".s", Pattern.CASE_INSENSITIVE);
+Matcher m = p.matcher("aS");  
+boolean s1 = m.matches();  
+System.out.println(s1);   // Outputs: true
+```
+
+#### 第二种方式
+
+```java
+boolean s2 = Pattern.compile("[0-9]+").matcher("123").matches();  
+System.out.println(s2);   // Outputs: true
+```
+
+#### 第三种方式
+
+```java
+boolean s3 = Pattern.matches(".s", "XXXX");  
+System.out.println(s3);   // Outputs: false
+```
+
+### 模式字段
+
+:- | -
+:- | -
+`CANON_EQ`         | 规范等价
+`CASE_INSENSITIVE` | 不区分大小写的匹配
+`COMMENTS`         | 允许空格和注释
+`DOTALL`           | 圆点模式
+`MULTILINE`        | 多行模式
+`UNICODE_CASE`     | Unicode 感知大小写折叠
+`UNIX_LINES`       | Unix 行模式
+
+### 方法
+
+#### Pattern
+
+- 模式编译 compile(字符串正则表达式 [,int flags])
+- 布尔匹配 matches([字符串正则表达式,] CharSequence 输入)
+- String[] 拆分 split(字符串正则表达式 [,int 限制])
+- 字符串引用 quote(字符串 s)
+
+#### 匹配器
+
+- int start([int group | 字符串名称])
+- int end([int group | 字符串名称])
+- 布尔 find([int start])
+- 字符 group([int 组 | 字符串名称])
+- 匹配器重置 reset()
+
+#### String
+
+- boolean matches(String regex)
+- String replaceAll(String regex, 字符串替换)
+- String[] split(String regex[, int limit])
+
+还有更多方法...
+
+### 例子
+<!--rehype:wrap-class=col-span-2-->
+
+替换句子：
+
+```java
+String regex = "[A-Z\n]{5}$";
+String str = "I like APP\nLE";
+Pattern p = Pattern.compile(regex, Pattern.MULTILINE);
+Matcher m = p.matcher(str);
+// Outputs: I like Apple!
+System.out.println(m.replaceAll("pple!"));
+```
+
+所有匹配的数组：
+
+```java
+String str = "She sells seashells by the Seashore";
+String regex = "\\w*se\\w*";
+Pattern p = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
+Matcher m = p.matcher(str);
+List<String> matches = new ArrayList<>();
+while (m.find()) {
+    matches.add(m.group());
+}
+// Outputs: [sells, seashells, Seashore]
+System.out.println(matches);
+```
+
+MySQL中的正则表达式
+-------------
+<!--rehype:body-class=cols-2-->
+
+### 函数
+
+函数名称 | 说明
+:- | -
+`REGEXP` | 字符串是否匹配正则表达式
+`REGEXP_INSTR()` | 匹配正则表达式的子字符串的起始索引 <br>_（注意：仅限 MySQL 8.0+）_
+`REGEXP_LIKE()` | 字符串是否匹配正则表达式 <br>_(注意：仅 MySQL 8.0+)_
+`REGEXP_REPLACE()` | 替换匹配正则表达式的子字符串 <br>_（注意：仅限 MySQL 8.0+）_
+`REGEXP_SUBSTR()` | 返回匹配正则表达式的子字符串 <br>_(注意：仅 MySQL 8.0+)_
+
+### REGEXP
+
+```sql
+expr REGEXP pat 
+```
+
+#### Examples
+
+```sql
+mysql> SELECT 'abc' REGEXP '^[a-d]';
+1
+mysql> SELECT name FROM cities WHERE name REGEXP '^A';
+mysql> SELECT name FROM cities WHERE name NOT REGEXP '^A';
+mysql> SELECT name FROM cities WHERE name REGEXP 'A|B|R';
+mysql> SELECT 'a' REGEXP 'A', 'a' REGEXP BINARY 'A';
+1   0
+```
+
+### REGEXP_REPLACE
+
+```
+REGEXP_REPLACE(expr, pat, repl[, pos[, occurrence[, match_type]]])
+```
+
+#### 例子
+
+```sql
+mysql> SELECT REGEXP_REPLACE('a b c', 'b', 'X');
+a X c
+mysql> SELECT REGEXP_REPLACE('abc ghi', '[a-z]+', 'X', 1, 2);
+abc X
+```
+
+### REGEXP_SUBSTR
+
+```
+REGEXP_SUBSTR(expr, pat[, pos[, occurrence[, match_type]]])
+```
+
+#### 例子
+
+```sql
+mysql> SELECT REGEXP_SUBSTR('abc def ghi', '[a-z]+');
+abc
+mysql> SELECT REGEXP_SUBSTR('abc def ghi', '[a-z]+', 1, 3);
+ghi
+```
+
+### REGEXP_LIKE
+
+```
+REGEXP_LIKE(expr, pat[, match_type])
+```
+
+#### 例子
+
+```sql
+mysql> SELECT regexp_like('aba', 'b+')
+1
+mysql> SELECT regexp_like('aba', 'b{2}')
+0
+mysql> # i: case-insensitive
+mysql> SELECT regexp_like('Abba', 'ABBA', 'i');
+1
+mysql> # m: multi-line
+mysql> SELECT regexp_like('a\nb\nc', '^b$', 'm');
+1
+```
+
+### REGEXP_INSTR
+
+```
+REGEXP_INSTR(expr, pat[, pos[, occurrence[, return_option[, match_type]]]])
+```
+
+#### 例子
+
+```sql
+mysql> SELECT regexp_instr('aa aaa aaaa', 'a{3}');
+2
+mysql> SELECT regexp_instr('abba', 'b{2}', 2);
+2
+mysql> SELECT regexp_instr('abbabba', 'b{2}', 1, 2);
+5
+mysql> SELECT regexp_instr('abbabba', 'b{2}', 1, 3, 1);
+7
+```
+
+也可以看看
+----------
+
+- [轻松学习 Regex](https://github.com/ziishaned/learn-regex/blob/master/translations/README-cn.md) _(github.com)_
+- [正则表达式实例搜集](https://jaywcjlove.github.io/regexp-example) _(jaywcjlove.github.io)_
+- [一些正则表达式随记](https://github.com/jaywcjlove/handbook/blob/master/docs/JavaScript/RegExp.md) _(jaywcjlove.github.io)_

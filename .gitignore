@@ -11,6 +11,7 @@ yarn.lock
 .idea
 .snap
 .env
+.husky
 
 *.bak
 *.tem

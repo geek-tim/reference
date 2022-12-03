@@ -9,11 +9,13 @@ Quick Reference
 为开发人员分享快速参考备忘清单【速查表】。这是英文版 [Reference](https://github.com/Randy8080/reference) 的中文版本，目的是为了方便自己的技术栈查阅，如果您提供一个清单，我将抽空搬运，立即撸起来 :)
 来修复它或提供更好的备忘清单，只针对【中文】用户。以下是开源天使提供的一些备忘清单和快速参考 :)。
 
+
 ## 正在建设中...
 
 坑已挖，需要您的参与完善和贡献！🙏
 <!--rehype:style=padding-bottom: 23px;-->
 
+[个人博客](./experience/blog.md)<!--rehype:style=background: rgb(92 107 192);&class=contributing-->
 [CMake](./docs/cmake.md)<!--rehype:style=background: rgb(92 107 192);&class=contributing-->  
 [Gitlab CI/CD](./docs/gitlab-ci.md)<!--rehype:style=background: rgb(226 67 41);&class=contributing-->  
 [NestJS](./docs/nestjs.md)<!--rehype:style=background: rgb(237 21 67);&class=contributing-->  
@@ -26,7 +28,7 @@ Quick Reference
 [C](./docs/c.md)<!--rehype:style=background: rgb(92 107 192);-->  
 [C++](./docs/cpp.md)<!--rehype:style=background: rgb(6 147 13);&class=contributing-->  
 [Docker](./docs/docker.md)<!--rehype:style=background: rgb(72 143 223);-->  
-[Dockerfile](./docs/dockerfile.md)<!--rehype:style=background: rgb(0 72 153);&class=tag&data-lang=Docker-->  
+[Dockerfile](./docs/dockerfile1.md)<!--rehype:style=background: rgb(0 72 153);&class=tag&data-lang=Docker-->  
 [GraphQL](./docs/graphql.md)<!--rehype:style=background: rgb(214 66 146);-->  
 [INI](./docs/ini.md)<!--rehype:style=background: rgb(57 59 60);-->  
 [JSON](./docs/json.md)<!--rehype:style=background: rgb(57 59 60);-->  
@@ -112,7 +114,7 @@ Quick Reference
 [ISO 639-1 Language Code](./docs/iso-639-1.md)<!--rehype:style=background: rgb(16 185 129);-->  
 [Emoji](./docs/emoji.md)<!--rehype:style=background: rgb(16 185 129);-->  
 [MIME types](./docs/mime.md)<!--rehype:style=background: rgb(16 185 129);-->  
-[Resolutions](./docs/resolutions.md)<!--rehype:style=background: rgb(16 185 129);-->  
+[Resolutions](./docs/resolution.md)<!--rehype:style=background: rgb(16 185 129);-->  
 <!--rehype:class=home-card-->
 
 ## 看到缺少什么了吗？

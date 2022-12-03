@@ -4,6 +4,8 @@
   "description": "为开发人员分享快速参考备忘单(主要是方便自己)。",
   "main": "index.js",
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "prepare": "husky install",
     "build": "refs-cli",
     "start": "refs-cli --watch",
@@ -15,6 +17,7 @@
     "url": "git+https://github.com/geek-tim/reference.git"
   },
   "dependencies": {
+    "gh-pages": "^4.0.0",
     "husky": "^8.0.1",
     "lint-staged": "^13.0.3",
     "prettier": "^2.7.1",
@@ -29,5 +32,5 @@
   "engines": {
     "node": ">=16.0.0"
   },
-  "homepage": "https://github.com/geek-tim/reference#readme"
+  "homepage": "https://luffyzh.github.io/first-github-pages"
 }
