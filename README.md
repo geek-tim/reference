@@ -89,6 +89,7 @@ Quick Reference
 ## 命令
 
 [Curl](./docs/curl.md)<!--rehype:style=background: rgb(16 185 129);-->  
+[linux cmd](./docs/linux.md)<!--rehype:style=background: rgb(16 185 129);-->  
 [Chmod](./docs/chmod.md)<!--rehype:style=background: rgb(16 185 129);-->  
 [CMake](./docs/cmake.md)<!--rehype:style=background: rgb(92 107 192);&class=contributing-->  
 [Git](./docs/git.md)<!--rehype:style=background: rgb(215 89 62);-->  

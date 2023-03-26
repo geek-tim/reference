@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
+    "deploy": "gh-pages -d dist",
     "prepare": "husky install",
     "build": "refs-cli",
     "start": "refs-cli --watch",
@@ -32,5 +32,5 @@
   "engines": {
     "node": ">=16.0.0"
   },
-  "homepage": "https://luffyzh.github.io/first-github-pages"
+  "homepage": "https://geek-tim.github.io/reference"
 }
