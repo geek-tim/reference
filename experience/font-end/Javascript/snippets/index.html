@@ -1,0 +1,606 @@
+<!doctype html>
+<html lang="en" data-color-mode="dark">
+<head>
+<meta charset="utf-8">
+<title>## 原生方法
+
+### instanceof
+`instanceof` 判断左边的原型是否存在于右边的原型链中。
+
+实现思路：逐层往上查找原型，如果最终的原型为 `null` ，证明不存在原型链中，否则存在。
+
+```
+function myInstanceof(left, right) { 
+    if (typeof left ! &#x26;  index cheatsheet &#x26;  Quick Reference</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta description="，为开发人员分享快速参考备忘单。">
+<meta keywords="index,reference,Quick,Reference,cheatsheet,cheat,sheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20height%3D%221em%22%20width%3D%221em%22%3E%20%3Cpath%20d%3D%22m21.66%2010.44-.98%204.18c-.84%203.61-2.5%205.07-5.62%204.77-.5-.04-1.04-.13-1.62-.27l-1.68-.4c-4.17-.99-5.46-3.05-4.48-7.23l.98-4.19c.2-.85.44-1.59.74-2.2%201.17-2.42%203.16-3.07%206.5-2.28l1.67.39c4.19.98%205.47%203.05%204.49%207.23Z%22%20fill%3D%22%23c9d1d9%22%2F%3E%20%3Cpath%20d%3D%22M15.06%2019.39c-.62.42-1.4.77-2.35%201.08l-1.58.52c-3.97%201.28-6.06.21-7.35-3.76L2.5%2013.28c-1.28-3.97-.22-6.07%203.75-7.35l1.58-.52c.41-.13.8-.24%201.17-.31-.3.61-.54%201.35-.74%202.2l-.98%204.19c-.98%204.18.31%206.24%204.48%207.23l1.68.4c.58.14%201.12.23%201.62.27Zm2.43-8.88c-.06%200-.12-.01-.19-.02l-4.85-1.23a.75.75%200%200%201%20.37-1.45l4.85%201.23a.748.748%200%200%201-.18%201.47Z%22%20fill%3D%22%23228e6c%22%20%2F%3E%20%3Cpath%20d%3D%22M14.56%2013.89c-.06%200-.12-.01-.19-.02l-2.91-.74a.75.75%200%200%201%20.37-1.45l2.91.74c.4.1.64.51.54.91-.08.34-.38.56-.72.56Z%22%20fill%3D%22%23228e6c%22%20%2F%3E%20%3C%2Fsvg%3E" type="image/svg+xml">
+<link rel="stylesheet" href="../../../../style/style.css">
+<link rel="stylesheet" href="../../../../style/katex.css">
+</head>
+<body><nav class="header-nav"><div class="max-container"><a href="../../../../index.html" class="logo"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" height="1em" width="1em">
+  <path d="m21.66 10.44-.98 4.18c-.84 3.61-2.5 5.07-5.62 4.77-.5-.04-1.04-.13-1.62-.27l-1.68-.4c-4.17-.99-5.46-3.05-4.48-7.23l.98-4.19c.2-.85.44-1.59.74-2.2 1.17-2.42 3.16-3.07 6.5-2.28l1.67.39c4.19.98 5.47 3.05 4.49 7.23Z" fill="#c9d1d9"></path>
+  <path d="M15.06 19.39c-.62.42-1.4.77-2.35 1.08l-1.58.52c-3.97 1.28-6.06.21-7.35-3.76L2.5 13.28c-1.28-3.97-.22-6.07 3.75-7.35l1.58-.52c.41-.13.8-.24 1.17-.31-.3.61-.54 1.35-.74 2.2l-.98 4.19c-.98 4.18.31 6.24 4.48 7.23l1.68.4c.58.14 1.12.23 1.62.27Zm2.43-8.88c-.06 0-.12-.01-.19-.02l-4.85-1.23a.75.75 0 0 1 .37-1.45l4.85 1.23a.748.748 0 0 1-.18 1.47Z" fill="#228e6c"></path>
+  <path d="M14.56 13.89c-.06 0-.12-.01-.19-.02l-2.91-.74a.75.75 0 0 1 .37-1.45l2.91.74c.4.1.64.51.54.91-.08.34-.38.56-.72.56Z" fill="#228e6c"></path>
+</svg>
+<span class="title">Quick Reference</span></a><div class="menu"><a href="javascript:void(0);" class="searchbtn" id="searchbtn"><svg xmlns="http://www.w3.org/2000/svg" height="1em" width="1em" viewBox="0 0 18 18">
+  <path fill="currentColor" d="M17.71,16.29 L14.31,12.9 C15.4069846,11.5024547 16.0022094,9.77665502 16,8 C16,3.581722 12.418278,0 8,0 C3.581722,0 0,3.581722 0,8 C0,12.418278 3.581722,16 8,16 C9.77665502,16.0022094 11.5024547,15.4069846 12.9,14.31 L16.29,17.71 C16.4777666,17.8993127 16.7333625,18.0057983 17,18.0057983 C17.2666375,18.0057983 17.5222334,17.8993127 17.71,17.71 C17.8993127,17.5222334 18.0057983,17.2666375 18.0057983,17 C18.0057983,16.7333625 17.8993127,16.4777666 17.71,16.29 Z M2,8 C2,4.6862915 4.6862915,2 8,2 C11.3137085,2 14,4.6862915 14,8 C14,11.3137085 11.3137085,14 8,14 C4.6862915,14 2,11.3137085 2,8 Z"></path>
+</svg><span>搜索</span><span>⌘K</span></a><a href="https://github.com/jaywcjlove/reference/blob/main/experience/font-end/Javascript/snippets/index.md" class="" target="__blank"><svg viewBox="0 0 36 36" fill="currentColor" height="1em" width="1em"><path d="m33 6.4-3.7-3.7a1.71 1.71 0 0 0-2.36 0L23.65 6H6a2 2 0 0 0-2 2v22a2 2 0 0 0 2 2h22a2 2 0 0 0 2-2V11.76l3-3a1.67 1.67 0 0 0 0-2.36ZM18.83 20.13l-4.19.93 1-4.15 9.55-9.57 3.23 3.23ZM29.5 9.43 26.27 6.2l1.85-1.85 3.23 3.23Z"></path><path fill="none" d="M0 0h36v36H0z"></path></svg><span>编辑</span></a><button id="darkMode" type="button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="light" height="1em" width="1em">
+  <path d="M6.995 12c0 2.761 2.246 5.007 5.007 5.007s5.007-2.246 5.007-5.007-2.246-5.007-5.007-5.007S6.995 9.239 6.995 12zM11 19h2v3h-2zm0-17h2v3h-2zm-9 9h3v2H2zm17 0h3v2h-3zM5.637 19.778l-1.414-1.414 2.121-2.121 1.414 1.414zM16.242 6.344l2.122-2.122 1.414 1.414-2.122 2.122zM6.344 7.759 4.223 5.637l1.415-1.414 2.12 2.122zm13.434 10.605-1.414 1.414-2.122-2.122 1.414-1.414z"></path>
+</svg>
+<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" class="dark" height="1em" width="1em">
+  <path d="M12 11.807A9.002 9.002 0 0 1 10.049 2a9.942 9.942 0 0 0-5.12 2.735c-3.905 3.905-3.905 10.237 0 14.142 3.906 3.906 10.237 3.905 14.143 0a9.946 9.946 0 0 0 2.735-5.119A9.003 9.003 0 0 1 12 11.807z"></path>
+</svg>
+</button><script src="../../../../js/dark.js"></script><a href="https://github.com/geek-tim/reference" class="" target="__blank"><svg viewBox="0 0 16 16" fill="currentColor" height="1em" width="1em"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path></svg></a></div></div></nav><div class="wrap h2body-exist"><div class="wrap-header h2wrap"><h2 id="原生方法"><a aria-hidden="true" tabindex="-1" href="#原生方法"><span class="icon icon-link"></span></a>原生方法</h2><div class="wrap-body">
+</div></div><div class="h2wrap-body"><div class="wrap h3body-not-exist"><div class="wrap-header h3wrap"><h3 id="instanceof"><a aria-hidden="true" tabindex="-1" href="#instanceof"><span class="icon icon-link"></span></a>instanceof</h3><div class="wrap-body">
+<p><code>instanceof</code> 判断左边的原型是否存在于右边的原型链中。</p>
+<p>实现思路：逐层往上查找原型，如果最终的原型为 <code>null</code> ，证明不存在原型链中，否则存在。</p>
+<pre><code class="code-highlight"><span class="code-line">function myInstanceof(left, right) { 
+</span><span class="code-line">    if (typeof left !== 'object' || left === null) 
+</span><span class="code-line">        return false // 基础类型一律为 false 
+</span><span class="code-line">    let proto = Object.getPrototypeOf(left) // 获取对象的原型 
+</span><span class="code-line">    
+</span><span class="code-line">    while(true) { 
+</span><span class="code-line">      if (proto === null) 
+</span><span class="code-line">        return false
+</span><span class="code-line">      if (proto === right.prototype) 
+</span><span class="code-line">        return true 
+</span><span class="code-line">      proto = Object.getPrototypeOf(proto) 
+</span><span class="code-line">    } 
+</span><span class="code-line">}
+</span><span class="code-line">
+</span></code></pre>
+</div></div></div><div class="wrap h3body-not-exist"><div class="wrap-header h3wrap"><h3 id="objectcreate"><a aria-hidden="true" tabindex="-1" href="#objectcreate"><span class="icon icon-link"></span></a>Object.create</h3><div class="wrap-body">
+<p><code>Object.create</code> 创建一个新对象，使用现有的对象作为新创建的对象的__proto__</p>
+<pre><code class="code-highlight"><span class="code-line">const myCreate = function(obj) { 
+</span><span class="code-line">    function F() {}
+</span><span class="code-line">    F.prototype = obj  
+</span><span class="code-line">    return new F() // 创建一个继承 obj 原型属性的纯净对象
+</span><span class="code-line">}
+</span></code></pre>
+</div></div></div><div class="wrap h3body-not-exist"><div class="wrap-header h3wrap"><h3 id="new"><a aria-hidden="true" tabindex="-1" href="#new"><span class="icon icon-link"></span></a>new</h3><div class="wrap-body">
+<p><code>new</code> 被调用后做了三件事情：</p>
+<ol>
+<li>让实例对象可以访问到私有属性</li>
+<li>让实例对象可以访问构造函数原型 (constructor.prototype) 所在原型链上的属性</li>
+<li>考虑构造函数有返回值的情况</li>
+</ol>
+<pre><code class="code-highlight"><span class="code-line">function myNew(fn, ...args) {
+</span><span class="code-line">    // let fn = Array.prototype.shift.call(arguments) // 取出第一个参数 ctor
+</span><span class="code-line">    if (typeof fn !== 'function') throw `${fn} is not a constructor`
+</span><span class="code-line">    let obj = Object.create(fn.prototype)
+</span><span class="code-line">    let res = fn.apply(obj, args) // 考虑构造函数有返回值的情况，直接执行
+</span><span class="code-line">    
+</span><span class="code-line">    let isObject = typeof res === 'object' &#x26;&#x26; res !== null
+</span><span class="code-line">    let isFunction = typeof res === 'function'
+</span><span class="code-line">    
+</span><span class="code-line">    return isObject || isFunction ? res : obj
+</span><span class="code-line">}
+</span></code></pre>
+</div></div></div><div class="wrap h3body-not-exist"><div class="wrap-header h3wrap"><h3 id="继承"><a aria-hidden="true" tabindex="-1" href="#继承"><span class="icon icon-link"></span></a>继承</h3><div class="wrap-body">
+<pre><code class="code-highlight"><span class="code-line">// 三步：1、继承父类原型链 2、继承父类静态方法 3、修正constructor 指向
+</span><span class="code-line">function inherit(Child,Parent){
+</span><span class="code-line">    child.prototype = Object.create(parent.prototype)
+</span><span class="code-line">    Object.setPrototypeOf(Child, Parent)
+</span><span class="code-line">    Child.prototype.constructor = Child
+</span><span class="code-line">}
+</span><span class="code-line">
+</span><span class="code-line">// ===============
+</span><span class="code-line">var Extend = function(){}
+</span><span class="code-line">
+</span><span class="code-line">Extend.extend = function(protoProps,staticProps){
+</span><span class="code-line">    var Super = this
+</span><span class="code-line">    var Sub = function(){
+</span><span class="code-line">        Super.call(this,arguments)
+</span><span class="code-line">    }
+</span><span class="code-line">    if(protoProps &#x26;&#x26; protoProps.hasOwnProperty('constructor') &#x26;&#x26; typeof protoProps.constructor === 'function'){
+</span><span class="code-line">        Sub = protoProps.constructor
+</span><span class="code-line">    }
+</span><span class="code-line">    var parentProps = Object.create(Super.prototype)
+</span><span class="code-line">    parentProps.constructor = Sub
+</span><span class="code-line">    // 继承静态方法
+</span><span class="code-line">    Object.assign(Sub,staticProps)
+</span><span class="code-line">        
+</span><span class="code-line">    // 切断原型链
+</span><span class="code-line">    Sub.prototype = Object.assign(parentProps,protoProps)
+</span><span class="code-line">    return Sub
+</span><span class="code-line">}
+</span></code></pre>
+</div></div></div><div class="wrap h3body-not-exist"><div class="wrap-header h3wrap"><h3 id="promise"><a aria-hidden="true" tabindex="-1" href="#promise"><span class="icon icon-link"></span></a>promise</h3><div class="wrap-body">
+<p>思路：</p>
+<pre><code class="code-highlight"></code></pre>
+</div></div></div></div></div><div class="wrap h2body-exist"><div class="wrap-header h2wrap"><h2 id="业务工具"><a aria-hidden="true" tabindex="-1" href="#业务工具"><span class="icon icon-link"></span></a>业务/工具</h2><div class="wrap-body">
+</div></div><div class="h2wrap-body"><div class="wrap h3body-not-exist"><div class="wrap-header h3wrap"><h3 id="jsonp"><a aria-hidden="true" tabindex="-1" href="#jsonp"><span class="icon icon-link"></span></a>JSONP</h3><div class="wrap-body">
+<p><code>JSONP</code>：常见的跨域手段，利用 <code>&#x3C;script></code> 标签没有跨域限制的漏洞，来达到与第三方通讯的目的。</p>
+<pre><code class="code-highlight"><span class="code-line">const jsonp = ({url, params, callbackName}) => {
+</span><span class="code-line">    const generateURL = () => { // 根据 URL 格式生成地址
+</span><span class="code-line">    	let dataStr = ''
+</span><span class="code-line">    	for (let key in params) {
+</span><span class="code-line">      	    dataStr += `${key}=${params[key]}&#x26;`
+</span><span class="code-line">    	}
+</span><span class="code-line">    	dataStr += `callback=${callbackName}`
+</span><span class="code-line">    	return `${url}?${dataStr}`
+</span><span class="code-line">    }
+</span><span class="code-line">    return new Promise((resolve, reject) => {
+</span><span class="code-line">    	callbackName = callbackName || Math.random().toString()
+</span><span class="code-line">    	let scriptEle = document.createElement('script')
+</span><span class="code-line">    	scriptEle.src = generateURL()
+</span><span class="code-line">    	document.body.appendChild(scriptEle)
+</span><span class="code-line">        // 服务器返回字符串 `${callbackName}(${服务器的数据})`，浏览器解析即可执行。
+</span><span class="code-line">    	window[callbackName] = (data) => {
+</span><span class="code-line">      	    resolve(data)
+</span><span class="code-line">      	    document.body.removeChild(scriptEle) // 别忘了清除 dom
+</span><span class="code-line">    	}
+</span><span class="code-line">    })
+</span><span class="code-line">}
+</span><span class="code-line">
+</span></code></pre>
+<p>具体实践也可以可参考webpack jsonp应用</p>
+</div></div></div><div class="wrap h3body-not-exist"><div class="wrap-header h3wrap"><h3 id="setmap"><a aria-hidden="true" tabindex="-1" href="#setmap"><span class="icon icon-link"></span></a>Set/Map</h3><div class="wrap-body">
+<pre><code class="code-highlight"><span class="code-line">// 去重
+</span><span class="code-line">function unique(arr) {
+</span><span class="code-line">    return [...new Set(arr)];
+</span><span class="code-line">}
+</span><span class="code-line">
+</span><span class="code-line">// 并集
+</span><span class="code-line">function union(arr1,arr2) {
+</span><span class="code-line">    return [...new Set(arr1),...new Set(arr2)];
+</span><span class="code-line">}
+</span><span class="code-line">
+</span><span class="code-line">// 交集
+</span><span class="code-line">// 并集
+</span><span class="code-line">function insect(arr1,arr2) {
+</span><span class="code-line">    return [...new Set(arr1)].filter(item => arr2.has(item));
+</span><span class="code-line">}
+</span><span class="code-line">
+</span><span class="code-line">// 差集
+</span><span class="code-line">function diffrence() {
+</span><span class="code-line">    return [...new Set(arr1)].filter(item => !arr2.has(item));
+</span><span class="code-line">}
+</span></code></pre>
+</div></div></div><div class="wrap h3body-not-exist"><div class="wrap-header h3wrap"><h3 id="浅拷贝"><a aria-hidden="true" tabindex="-1" href="#浅拷贝"><span class="icon icon-link"></span></a>浅拷贝</h3><div class="wrap-body">
+<p><code>浅拷贝</code>：</p>
+<ul>
+<li>只能拷贝一层对象，如果有对象的嵌套，浅拷贝无能为力。</li>
+<li>潜在问题：假若拷贝的属性是引用类型，拷贝的就是内存地址，修改内容会互相影响。</li>
+</ul>
+<pre><code class="code-highlight"><span class="code-line">const shallowClone = (target) => {
+</span><span class="code-line">  if (typeof target === 'object' &#x26;&#x26; target !== null) {
+</span><span class="code-line">    const cloneTarget = Array.isArray(target) ? []: {}
+</span><span class="code-line">    for (let prop in target) {
+</span><span class="code-line">      if (target.hasOwnProperty(prop)) { // 是否是自身（非继承）属性
+</span><span class="code-line">          cloneTarget[prop] = target[prop] // 只考虑一层对象
+</span><span class="code-line">      }
+</span><span class="code-line">    }
+</span><span class="code-line">    return cloneTarget
+</span><span class="code-line">  } else {
+</span><span class="code-line">    return target // 基础类型直接返回
+</span><span class="code-line">  }
+</span><span class="code-line">}
+</span><span class="code-line">
+</span><span class="code-line">// 或者你可以
+</span><span class="code-line">console.log(Object.assign(array, ...sources))
+</span><span class="code-line">console.log(array.concat())
+</span><span class="code-line">console.log(array.slice())
+</span><span class="code-line">console.log([...array])
+</span></code></pre>
+</div></div></div><div class="wrap h3body-not-exist"><div class="wrap-header h3wrap"><h3 id="深拷贝"><a aria-hidden="true" tabindex="-1" href="#深拷贝"><span class="icon icon-link"></span></a>深拷贝</h3><div class="wrap-body">
+<pre><code class="code-highlight"><span class="code-line">// 乞丐版
+</span><span class="code-line">// 缺点：
+</span><span class="code-line">// 1.  无法解决 `循环引用`。
+</span><span class="code-line">// 2、 无法拷贝特殊的对象，比如 `函数、RegExp、Date、Set、Map` 等。
+</span><span class="code-line">
+</span><span class="code-line">var newObj = JSON.parse( JSON.stringify( someObj ) );
+</span><span class="code-line">
+</span><span class="code-line">// 面试够用版本: 
+</span><span class="code-line">// 
+</span><span class="code-line">// 思路   输入：对象 输出 新对象 
+</span><span class="code-line">//      1、 for in 遍历 递归拷贝自有属性(hasOwnproperty), 还是原型属性也要拷贝
+</span><span class="code-line">//      2、 通过map收集每次复制的对象防止循环引用
+</span><span class="code-line">function deepCopy(origin, hash = new map()){
+</span><span class="code-line">   if(origin === null){
+</span><span class="code-line">     return null 
+</span><span class="code-line">   }
+</span><span class="code-line">   if(typeof origin !== 'object'){
+</span><span class="code-line">      return origin
+</span><span class="code-line">   }
+</span><span class="code-line">   if(hash.get(origin)) return hash.get(origin);// 防止循环引用
+</span><span class="code-line">   
+</span><span class="code-line">   let target = new origin.constructor(); // 拷贝原型属性
+</span><span class="code-line">    hash.set(origin, target);
+</span><span class="code-line">    
+</span><span class="code-line">   for(var key in origin){
+</span><span class="code-line">     // 复制自有属性
+</span><span class="code-line">     if(origin.hasOwnProperty(key)){
+</span><span class="code-line">        target[key] = deepClone(origin[key],hash) 
+</span><span class="code-line">     }
+</span><span class="code-line">   }
+</span><span class="code-line">   return target
+</span><span class="code-line">}
+</span><span class="code-line">
+</span></code></pre>
+</div></div></div><div class="wrap h3body-not-exist"><div class="wrap-header h3wrap"><h3 id="防抖debouncing和节流throttling"><a aria-hidden="true" tabindex="-1" href="#防抖debouncing和节流throttling"><span class="icon icon-link"></span></a>防抖(<code>Debouncing</code>)和节流(<code>Throttling</code>)</h3><div class="wrap-body">
+<p>利用闭包原理：</p>
+<pre><code class="code-highlight"><span class="code-line">// 防抖: 前一次被后一次指向覆盖
+</span><span class="code-line">function debounce(fn,delay){
+</span><span class="code-line">    var timer = null
+</span><span class="code-line">    return function(...args){
+</span><span class="code-line">        if(timer) clearTimeout(timer)
+</span><span class="code-line">        timer = setTimeout(()=>{
+</span><span class="code-line">            fn.apply(this,args)
+</span><span class="code-line">        })
+</span><span class="code-line">    }
+</span><span class="code-line">}
+</span><span class="code-line">
+</span><span class="code-line">// 节流：固定频率执行
+</span><span class="code-line">// 简易版本
+</span><span class="code-line">function throttle(fn,delay){
+</span><span class="code-line">    var last = 0;
+</span><span class="code-line">    return function(...args){
+</span><span class="code-line">        var now = +new Date()
+</span><span class="code-line">        if(now -last &#x3C; delay) return
+</span><span class="code-line">        last = now
+</span><span class="code-line">        fn.apply(this,args)
+</span><span class="code-line">    }
+</span><span class="code-line">}
+</span><span class="code-line">
+</span><span class="code-line">
+</span><span class="code-line">function throttle(fn,delay){
+</span><span class="code-line">    var timer = 0; last = 0;
+</span><span class="code-line">    return function(...args){
+</span><span class="code-line">        var now = +new Date()
+</span><span class="code-line">        if(now -last &#x3C; delay) {
+</span><span class="code-line">            timer = setTimout(()=>{
+</span><span class="code-line">                last = now
+</span><span class="code-line">                fn.apply(this,args)
+</span><span class="code-line">            },delay)
+</span><span class="code-line">        }else{
+</span><span class="code-line">            // 立即执行
+</span><span class="code-line">            last = now
+</span><span class="code-line">            fn.apply(this,args)
+</span><span class="code-line">        }
+</span><span class="code-line">    }
+</span><span class="code-line">}
+</span></code></pre>
+</div></div></div></div></div><div class="wrap h2body-exist"><div class="wrap-header h2wrap"><h2 id="算法"><a aria-hidden="true" tabindex="-1" href="#算法"><span class="icon icon-link"></span></a>算法</h2><div class="wrap-body">
+</div></div><div class="h2wrap-body"><div class="wrap h3body-not-exist"><div class="wrap-header h3wrap"><h3 id="树转列表"><a aria-hidden="true" tabindex="-1" href="#树转列表"><span class="icon icon-link"></span></a>树转列表</h3><div class="wrap-body">
+<pre><code class="code-highlight"><span class="code-line">function treeToList (tree, result = [], level = 0) {
+</span><span class="code-line">  tree.forEach(node => {
+</span><span class="code-line">    result.push(node)
+</span><span class="code-line">    node.level = level + 1
+</span><span class="code-line">    node.children &#x26;&#x26; treeToList(node.children, result, level + 1)
+</span><span class="code-line">  })
+</span><span class="code-line">  return result
+</span><span class="code-line">}
+</span><span class="code-line">
+</span><span class="code-line">// 循环实现
+</span><span class="code-line">function treeToList (tree) {
+</span><span class="code-line">  let node, result = tree.map(node => (node.level = 1, node))
+</span><span class="code-line">  for (let i = 0; i &#x3C; result.length; i++) {
+</span><span class="code-line">    if (!result[i].children) continue
+</span><span class="code-line">    let list = result[i].children.map(node => (node.level = result[i].level + 1, node))
+</span><span class="code-line">    result.splice(i+1, 0, ...list)
+</span><span class="code-line">  }
+</span><span class="code-line">  return result
+</span><span class="code-line">}
+</span></code></pre>
+</div></div></div><div class="wrap h3body-not-exist"><div class="wrap-header h3wrap"><h3 id="列表转树"><a aria-hidden="true" tabindex="-1" href="#列表转树"><span class="icon icon-link"></span></a>列表转树</h3><div class="wrap-body">
+<pre><code class="code-highlight"><span class="code-line">// 思路： 1、mapping : (id => node)  2、返回没有parentId的值，并处理有parentId 的挂载到相应node.children
+</span><span class="code-line">function listToTree (list) {
+</span><span class="code-line">  let info = list.reduce((map, node) => (map[node.id] = node, node.children = [], map), {})
+</span><span class="code-line">  return list.filter(node => {
+</span><span class="code-line">    info[node.parentId] &#x26;&#x26; info[node.parentId].children.push(node)
+</span><span class="code-line">    return !node.parentId
+</span><span class="code-line">  })
+</span><span class="code-line">}
+</span></code></pre>
+</div></div></div><div class="wrap h3body-exist"><div class="wrap-header h3wrap"><h3 id="数组排序"><a aria-hidden="true" tabindex="-1" href="#数组排序"><span class="icon icon-link"></span></a>数组排序</h3><div class="wrap-body">
+<h4 id="1-冒泡排序"><a aria-hidden="true" tabindex="-1" href="#1-冒泡排序"><span class="icon icon-link"></span></a>1. 冒泡排序</h4>
+<p>实现思路 ：每一次内循环最后一个值确认为最大，外循环缩小比较范围，不在比较最后一个值。</p>
+<p>举个例子：</p>
+<pre><code class="code-highlight"><span class="code-line">输入：[1,5,4,2,3] 
+</span><span class="code-line">
+</span><span class="code-line">排序过程：
+</span><span class="code-line">[1,5,4,2,3] => [1,4,5,2,3] => [1,4,2,5,3] => [1,4,2,3,5] // 第一个循环确认最大值 5
+</span><span class="code-line">[1,4,2,3] => [1,2,4,3] => [1,2,3,4]  // 第二次循环确认 剩余数组最大
+</span><span class="code-line">
+</span><span class="code-line">输出:
+</span><span class="code-line">[1,2,3,4,5]
+</span></code></pre>
+<pre><code class="code-highlight"><span class="code-line">function bubbleSort(arr) {
+</span><span class="code-line">    let len = arr.length
+</span><span class="code-line">    for (let i = len-1; i>=1; i--) { // 排完第 2 个，第一个自动为最小
+</span><span class="code-line">    	for (let j = 0; j&#x3C; i ; j++) { // 逐渐缩小范围
+</span><span class="code-line">            if (arr[j] > arr[j+1]){ // 大的值放后面
+</span><span class="code-line">                [arr[j], arr[j+1]] = [arr[j+1], arr[j]]
+</span><span class="code-line">            }           	
+</span><span class="code-line">        }
+</span><span class="code-line">    }
+</span><span class="code-line">    return arr
+</span><span class="code-line">}
+</span><span class="code-line">
+</span></code></pre>
+<h4 id="2-选择排序"><a aria-hidden="true" tabindex="-1" href="#2-选择排序"><span class="icon icon-link"></span></a>2. 选择排序</h4>
+<p>实现思路：首先从原始数组中找到最小的元素，并把该元素放在数组的最前面，然后再从剩下的元素中寻找最小的元素，放在之前最小元素的后面，直到排序完毕。。每轮比较只换一次位置</p>
+<p>举个例子:</p>
+<pre><code class="code-highlight"><span class="code-line">输入：[1,5,4,2,3] 
+</span><span class="code-line">排序过程：
+</span><span class="code-line">[1,5,4,2,3] => [1,5,4,2,3]  // 第一轮 1 位置不变
+</span><span class="code-line">[5,4,2,3] => [2,4,5,3]  // 第二轮更换一次 5，2 位置对调
+</span><span class="code-line">[4,5,3] => [3,5,4] // 第二轮更换一次 4，3 位置对调
+</span><span class="code-line">[5,4] => [4,5] // 
+</span><span class="code-line">
+</span><span class="code-line">输出：[1,2,3,4,5]
+</span></code></pre>
+<pre><code class="code-highlight"><span class="code-line">function selectSort(arr) {
+</span><span class="code-line">    let len = arr.length
+</span><span class="code-line">    var minIndex
+</span><span class="code-line">    for (let i=0; i&#x3C;len-1; i++) {
+</span><span class="code-line">        minIndex = i
+</span><span class="code-line">    	for (let j=i+1; j&#x3C;len; j++) {
+</span><span class="code-line">            if (arr[j] &#x3C; arr[minIndex]){
+</span><span class="code-line">                minIndex = j
+</span><span class="code-line">            }
+</span><span class="code-line">        }
+</span><span class="code-line">        if(minIndex !== i){
+</span><span class="code-line">            [arr[i], arr[minIndex]] = [arr[minIndex], arr[i]]
+</span><span class="code-line">        }
+</span><span class="code-line">    }
+</span><span class="code-line">    return arr
+</span><span class="code-line">}
+</span></code></pre>
+<p>网上看到还有另外一种写法：看着不像选择排序思想，有了解同学可以帮忙解释一下^^</p>
+<pre><code class="code-highlight"><span class="code-line">function selectSort(arr) {
+</span><span class="code-line">    let len = arr.length
+</span><span class="code-line">    for (let i=0; i&#x3C;len-1; i++) {
+</span><span class="code-line">    	for (let j=i+1; j&#x3C;len; j++) {
+</span><span class="code-line">            if (arr[j] &#x3C; arr[i]){
+</span><span class="code-line">                 [arr[i], arr[j]] = [arr[j], arr[i]]
+</span><span class="code-line">            }
+</span><span class="code-line">        }
+</span><span class="code-line">    }
+</span><span class="code-line">    return arr
+</span><span class="code-line">}
+</span></code></pre>
+<h4 id="3-插入排序"><a aria-hidden="true" tabindex="-1" href="#3-插入排序"><span class="icon icon-link"></span></a>3. 插入排序</h4>
+<p><code>实现思路</code>：将未排序的元素插入到已排序好的数组中。</p>
+<p>举个例子：</p>
+<pre><code class="code-highlight"><span class="code-line">输入：[1,5,4,2,3] 
+</span><span class="code-line">
+</span><span class="code-line">排序过程：
+</span><span class="code-line">[1]
+</span><span class="code-line">[1,5]
+</span><span class="code-line">[1,5,4] => [1,4,5]
+</span><span class="code-line">[1,4,5,2] => [1,4,2,5] => [1,2,4,5] 
+</span><span class="code-line">[1,2,4,5,3] => [1,2,4,3,5] => [1,2,3,4,5] 
+</span><span class="code-line">
+</span><span class="code-line">输出：[1,2,3,4,5]
+</span></code></pre>
+<pre><code class="code-highlight"><span class="code-line">function insertSort(arr) {
+</span><span class="code-line">    var len = arr.length
+</span><span class="code-line">    for (let i=1; i&#x3C; len; i++) { // arr[0] 默认为已排序的数组
+</span><span class="code-line">    	for (let j = i; j>0; j--) {
+</span><span class="code-line">            if (arr[j] &#x3C; arr[j-1]) {
+</span><span class="code-line">            	[arr[j],arr[j-1]] = [arr[j-1],arr[j]]
+</span><span class="code-line">            } else { 
+</span><span class="code-line">                break
+</span><span class="code-line">            }
+</span><span class="code-line">        }
+</span><span class="code-line">    }
+</span><span class="code-line">    return arr
+</span><span class="code-line">}
+</span></code></pre>
+<h4 id="4-快速排序"><a aria-hidden="true" tabindex="-1" href="#4-快速排序"><span class="icon icon-link"></span></a>4. 快速排序</h4>
+<p><code>实现思路</code>：选择基准值 mid，循环原数组，小于基准值放左边数组，大于放右边数组，然后 concat 组合，最后依靠递归完成排序。</p>
+<p><code>[1,5,4,2,3]</code> 不太合适解释这个算法，换个输入来举例子</p>
+<pre><code class="code-highlight"><span class="code-line">输入：[2,5,4,1,3] 
+</span><span class="code-line">
+</span><span class="code-line">排序过程：
+</span><span class="code-line">mid:[2]  left: [1] right:[5,4,3] => [1,2,5,4,3]
+</span><span class="code-line">
+</span><span class="code-line">right:[5,4,3] => mid:[5] left:[4,3] => [4,3,5] => [1,2,4,3,5]
+</span><span class="code-line">
+</span><span class="code-line">left:[4,3] => mid[4] left:[3] => [3,4] => [1,2,3,4,5]
+</span><span class="code-line">
+</span><span class="code-line">输出：[1,2,3,4,5]
+</span><span class="code-line">
+</span></code></pre>
+<pre><code class="code-highlight"><span class="code-line">function quickSort(arr) {
+</span><span class="code-line">    if (arr.length &#x3C;= 1) return arr
+</span><span class="code-line">    let left = [], right = [], mid = arr.splice(0, 1)
+</span><span class="code-line">    for (let i=0; i&#x3C;arr.length; i++) {
+</span><span class="code-line">    	if (arr[i] &#x3C; mid) {
+</span><span class="code-line">      	    left.push(arr[i])
+</span><span class="code-line">      	} else {
+</span><span class="code-line">      	    right.push(arr[i])
+</span><span class="code-line">    	}
+</span><span class="code-line">    }
+</span><span class="code-line">    return quickSort(left).concat(mid, quickSort(right)) // 别忘了 mid
+</span><span class="code-line">}
+</span></code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>排序算法</th><th>平均时间复杂度</th><th>空间复杂度</th><th>最好情况！</th><th>稳定性</th></tr></thead><tbody><tr><td>冒泡排序</td><td>O(n^2)</td><td>O(1)</td><td>O(n)</td><td>稳定</td></tr><tr><td>选择排序</td><td>O(n^2)</td><td>O(1)</td><td>O(n^2)</td><td>不稳定</td></tr><tr><td>插入排序</td><td>O(n^2)</td><td>O(1)</td><td>O(n)</td><td>稳定</td></tr><tr><td>快速排序</td><td>O(nlogn)</td><td>O(logn)</td><td>O(nlogn)</td><td>不稳定</td></tr></tbody></table>
+</div></div></div><div class="wrap h3body-exist"><div class="wrap-header h3wrap"><h3 id="数组去重"><a aria-hidden="true" tabindex="-1" href="#数组去重"><span class="icon icon-link"></span></a>数组去重</h3><div class="wrap-body">
+<h4 id="交集并集差集"><a aria-hidden="true" tabindex="-1" href="#交集并集差集"><span class="icon icon-link"></span></a>交集、并集、差集</h4>
+<pre><code class="code-highlight"><span class="code-line">let a = new Set([1,3,2]) // 先去重
+</span><span class="code-line">let b = new Set([1,4,2]) 
+</span><span class="code-line">
+</span><span class="code-line">// 并集
+</span><span class="code-line">let union = new Set([...a,...b])
+</span><span class="code-line">
+</span><span class="code-line">// 交集
+</span><span class="code-line">let interSet = new Set([...a].filter(x => b.has(x)))
+</span><span class="code-line">
+</span><span class="code-line">// 差集 a - b
+</span><span class="code-line">let difference = new Set([...a].filter(x => !b.has(x))) 
+</span><span class="code-line">
+</span></code></pre>
+</div></div></div><div class="wrap h3body-not-exist"><div class="wrap-header h3wrap"><h3 id="设计模式"><a aria-hidden="true" tabindex="-1" href="#设计模式"><span class="icon icon-link"></span></a>设计模式</h3><div class="wrap-body">
+</div></div></div><div class="wrap h3body-exist"><div class="wrap-header h3wrap"><h3 id="函数式编程"><a aria-hidden="true" tabindex="-1" href="#函数式编程"><span class="icon icon-link"></span></a>函数式编程</h3><div class="wrap-body">
+<h4 id="函数的柯里化"><a aria-hidden="true" tabindex="-1" href="#函数的柯里化"><span class="icon icon-link"></span></a>函数的柯里化</h4>
+<ul>
+<li>定义：将函数与其参数的一个子集绑定起来后返回个新函数。</li>
+<li>好处：减少代码冗余，增加可读性，是一种简洁的实现函数委托的方式</li>
+</ul>
+<pre><code class="code-highlight"><span class="code-line">// 累乘运算
+</span><span class="code-line">function multiFn(x, y, z) {
+</span><span class="code-line">    return x * y * z
+</span><span class="code-line">}
+</span><span class="code-line">function curry() { ... } // 假设有一个 curry 函数可以做到柯里化
+</span><span class="code-line">let multi = curry(multiFn)
+</span><span class="code-line">multi(2, 3, 4)
+</span><span class="code-line">multi(2)(3)(4)
+</span><span class="code-line">multi(2, 3)(4)
+</span><span class="code-line">multi(2)(3, 4)   // 以上结果都是 3，柯里化将参数拆开自由绑定，结果不变。
+</span><span class="code-line">let seniorMulti = multi(2) // seniorMulti 可以多次使用
+</span><span class="code-line">seniorMulti(3)(4) // 当我们觉得重复传递参数 2 总是冗余时，可以这样。
+</span></code></pre>
+<p>代码实现：</p>
+<pre><code class="code-highlight"><span class="code-line">function curry(fn, args=[]) {
+</span><span class="code-line">    return function() {
+</span><span class="code-line">        let newArgs = args.concat(Array.prototype.slice.call(arguments))
+</span><span class="code-line">        if (newArgs.length &#x3C; fn.length) { // 假如：实参个数 &#x3C; 形参个数
+</span><span class="code-line">            return curry.call(this, fn, newArgs)
+</span><span class="code-line">        } else {
+</span><span class="code-line">            return fn.apply(this, newArgs)
+</span><span class="code-line">        }
+</span><span class="code-line">    }
+</span><span class="code-line">}
+</span><span class="code-line">
+</span><span class="code-line">// ES6 高颜值写法
+</span><span class="code-line">const curry = fn =>
+</span><span class="code-line">    judge = (...args) =>
+</span><span class="code-line">        args.length === fn.length
+</span><span class="code-line">            ? fn(...args)
+</span><span class="code-line">            : (arg2) => judge(...args, arg2)
+</span></code></pre>
+<h4 id="composed"><a aria-hidden="true" tabindex="-1" href="#composed"><span class="icon icon-link"></span></a>composed</h4>
+<p>意义： 借助 compose 函数对连续的异步过程进行组装，不同的组合方式实现不同的业务流程</p>
+<pre><code class="code-highlight"><span class="code-line">
+</span><span class="code-line">// ====== compose ======
+</span><span class="code-line">
+</span><span class="code-line">// ===== 组合同步操作 ====  start
+</span><span class="code-line">function compose(...fns) {
+</span><span class="code-line">    return function composed(result){
+</span><span class="code-line">        // 拷贝一份保存函数的数组
+</span><span class="code-line">        var list = fns.slice();
+</span><span class="code-line">        while (list.length > 0) {
+</span><span class="code-line">            result = list.pop()( result ); // 保证从右向左执行
+</span><span class="code-line">        }
+</span><span class="code-line">        return result;
+</span><span class="code-line">    };
+</span><span class="code-line">}
+</span><span class="code-line">var f1 = function(){
+</span><span class="code-line">    console.log(1)
+</span><span class="code-line">}
+</span><span class="code-line">var f2 = function(){
+</span><span class="code-line">    console.log(2)
+</span><span class="code-line">}
+</span><span class="code-line">var f3 = function(){
+</span><span class="code-line">    console.log(3)
+</span><span class="code-line">}
+</span><span class="code-line">
+</span><span class="code-line">// 随机组合
+</span><span class="code-line">console.log('f1,f2,f3:')
+</span><span class="code-line">compose(...[f3, f2, f1])()
+</span><span class="code-line">
+</span><span class="code-line">console.log('f3,f2,f1:')
+</span><span class="code-line">compose(...[f1, f2, f3])()
+</span><span class="code-line">
+</span><span class="code-line">// ===== 组合同步操作 ====  end
+</span><span class="code-line">
+</span><span class="code-line">
+</span><span class="code-line">// ===== 组合异步顺序操作 ====  start
+</span><span class="code-line">var composePromise = function(...args) {
+</span><span class="code-line">  var init = args.pop()
+</span><span class="code-line">  return function(...arg) {
+</span><span class="code-line">    return args.reverse().reduce(function(sequence, func) { // 保证从右向左执行
+</span><span class="code-line">      return sequence.then(function(result) {
+</span><span class="code-line">        return func.call(null, result)
+</span><span class="code-line">      })
+</span><span class="code-line">    }, Promise.resolve(init.apply(null, arg)))
+</span><span class="code-line">  }
+</span><span class="code-line">}
+</span><span class="code-line">
+</span><span class="code-line">
+</span><span class="code-line">var a = async() => {
+</span><span class="code-line">  return new Promise((resolve, reject) => {
+</span><span class="code-line">    setTimeout(() => {
+</span><span class="code-line">      console.log('xhr1')
+</span><span class="code-line">      resolve('xhr1')
+</span><span class="code-line">    }, 5000)
+</span><span class="code-line">  })
+</span><span class="code-line">}
+</span><span class="code-line">
+</span><span class="code-line">var b = async() => {
+</span><span class="code-line">  return new Promise((resolve, reject) => {
+</span><span class="code-line">    setTimeout(() => {
+</span><span class="code-line">      console.log('xhr2')
+</span><span class="code-line">      resolve('xhr2')
+</span><span class="code-line">    }, 3000)
+</span><span class="code-line">  })
+</span><span class="code-line">}
+</span><span class="code-line">var steps = [a, b] // 从右向左执行
+</span><span class="code-line">var composeFn = composePromise(...steps)
+</span><span class="code-line">
+</span><span class="code-line">composeFn().then(res => { console.log(666) })
+</span><span class="code-line">
+</span><span class="code-line">// ===== 组合异步顺序操作 ====  start
+</span></code></pre>
+<pre><code class="code-highlight"><span class="code-line">// 借助 compose 函数对连续的异步过程进行组装，不同的组合方式实现不同的业务流程
+</span><span class="code-line">// 我们希望使用：compose(f1,f2,f3,init)(...args) ==> 实际执行：init(f1(f2(f3.apply(this,args))))
+</span><span class="code-line">
+</span><span class="code-line">// ===== 组合同步操作 ====  start
+</span><span class="code-line">const _pipe = (f, g) => {
+</span><span class="code-line">  return (...arg) => {
+</span><span class="code-line">    return g.call(this, f.apply(this, arg))
+</span><span class="code-line">  }
+</span><span class="code-line">}
+</span><span class="code-line">const compose = (...fns) => fns.reverse().reduce(_pipe, fns.shift())
+</span></code></pre>
+</div></div></div><div class="wrap h3body-exist"><div class="wrap-header h3wrap"><h3 id="框架"><a aria-hidden="true" tabindex="-1" href="#框架"><span class="icon icon-link"></span></a>框架</h3><div class="wrap-body">
+<h4 id="vue"><a aria-hidden="true" tabindex="-1" href="#vue"><span class="icon icon-link"></span></a>vue</h4>
+</div></div></div></div></div><footer class="footer-wrap"><footer class="max-container">© 2022 Kenny Wang.</footer></footer><script src="../../../../data.js" defer></script><script src="../../../../js/fuse.min.js" defer></script><script src="../../../../js/main.js" defer></script><div id="mysearch"><div class="mysearch-box"><div class="mysearch-input"><div><svg xmlns="http://www.w3.org/2000/svg" height="1em" width="1em" viewBox="0 0 18 18">
+  <path fill="currentColor" d="M17.71,16.29 L14.31,12.9 C15.4069846,11.5024547 16.0022094,9.77665502 16,8 C16,3.581722 12.418278,0 8,0 C3.581722,0 0,3.581722 0,8 C0,12.418278 3.581722,16 8,16 C9.77665502,16.0022094 11.5024547,15.4069846 12.9,14.31 L16.29,17.71 C16.4777666,17.8993127 16.7333625,18.0057983 17,18.0057983 C17.2666375,18.0057983 17.5222334,17.8993127 17.71,17.71 C17.8993127,17.5222334 18.0057983,17.2666375 18.0057983,17 C18.0057983,16.7333625 17.8993127,16.4777666 17.71,16.29 Z M2,8 C2,4.6862915 4.6862915,2 8,2 C11.3137085,2 14,4.6862915 14,8 C14,11.3137085 11.3137085,14 8,14 C4.6862915,14 2,11.3137085 2,8 Z"></path>
+</svg><input id="mysearch-input" type="search" placeholder="搜索" autocomplete="off"><div class="mysearch-clear"></div></div><button id="mysearch-close" type="button">搜索</button></div><div class="mysearch-result"><div id="mysearch-menu"></div><div id="mysearch-content"></div></div></div></div></body>
+</html>

@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="en" data-color-mode="dark">
+<head>
+<meta charset="utf-8">
+<title># 全栈之路 docker 从0到1
+
+什么是docker(WHAT：抽象概念)
+---
+
+### 概念
+&#x3C;!--rehype:wrap-class &#x26;  docker cheatsheet &#x26;  Quick Reference</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta description="，为开发人员分享快速参考备忘单。">
+<meta keywords="docker,reference,Quick,Reference,cheatsheet,cheat,sheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20height%3D%221em%22%20width%3D%221em%22%3E%20%3Cpath%20d%3D%22m21.66%2010.44-.98%204.18c-.84%203.61-2.5%205.07-5.62%204.77-.5-.04-1.04-.13-1.62-.27l-1.68-.4c-4.17-.99-5.46-3.05-4.48-7.23l.98-4.19c.2-.85.44-1.59.74-2.2%201.17-2.42%203.16-3.07%206.5-2.28l1.67.39c4.19.98%205.47%203.05%204.49%207.23Z%22%20fill%3D%22%23c9d1d9%22%2F%3E%20%3Cpath%20d%3D%22M15.06%2019.39c-.62.42-1.4.77-2.35%201.08l-1.58.52c-3.97%201.28-6.06.21-7.35-3.76L2.5%2013.28c-1.28-3.97-.22-6.07%203.75-7.35l1.58-.52c.41-.13.8-.24%201.17-.31-.3.61-.54%201.35-.74%202.2l-.98%204.19c-.98%204.18.31%206.24%204.48%207.23l1.68.4c.58.14%201.12.23%201.62.27Zm2.43-8.88c-.06%200-.12-.01-.19-.02l-4.85-1.23a.75.75%200%200%201%20.37-1.45l4.85%201.23a.748.748%200%200%201-.18%201.47Z%22%20fill%3D%22%23228e6c%22%20%2F%3E%20%3Cpath%20d%3D%22M14.56%2013.89c-.06%200-.12-.01-.19-.02l-2.91-.74a.75.75%200%200%201%20.37-1.45l2.91.74c.4.1.64.51.54.91-.08.34-.38.56-.72.56Z%22%20fill%3D%22%23228e6c%22%20%2F%3E%20%3C%2Fsvg%3E" type="image/svg+xml">
+<link rel="stylesheet" href="../style/style.css">
+<link rel="stylesheet" href="../style/katex.css">
+</head>
+<body><nav class="header-nav"><div class="max-container"><a href="../index.html" class="logo"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" height="1em" width="1em">
+  <path d="m21.66 10.44-.98 4.18c-.84 3.61-2.5 5.07-5.62 4.77-.5-.04-1.04-.13-1.62-.27l-1.68-.4c-4.17-.99-5.46-3.05-4.48-7.23l.98-4.19c.2-.85.44-1.59.74-2.2 1.17-2.42 3.16-3.07 6.5-2.28l1.67.39c4.19.98 5.47 3.05 4.49 7.23Z" fill="#c9d1d9"></path>
+  <path d="M15.06 19.39c-.62.42-1.4.77-2.35 1.08l-1.58.52c-3.97 1.28-6.06.21-7.35-3.76L2.5 13.28c-1.28-3.97-.22-6.07 3.75-7.35l1.58-.52c.41-.13.8-.24 1.17-.31-.3.61-.54 1.35-.74 2.2l-.98 4.19c-.98 4.18.31 6.24 4.48 7.23l1.68.4c.58.14 1.12.23 1.62.27Zm2.43-8.88c-.06 0-.12-.01-.19-.02l-4.85-1.23a.75.75 0 0 1 .37-1.45l4.85 1.23a.748.748 0 0 1-.18 1.47Z" fill="#228e6c"></path>
+  <path d="M14.56 13.89c-.06 0-.12-.01-.19-.02l-2.91-.74a.75.75 0 0 1 .37-1.45l2.91.74c.4.1.64.51.54.91-.08.34-.38.56-.72.56Z" fill="#228e6c"></path>
+</svg>
+<span class="title">Quick Reference</span></a><div class="menu"><a href="javascript:void(0);" class="searchbtn" id="searchbtn"><svg xmlns="http://www.w3.org/2000/svg" height="1em" width="1em" viewBox="0 0 18 18">
+  <path fill="currentColor" d="M17.71,16.29 L14.31,12.9 C15.4069846,11.5024547 16.0022094,9.77665502 16,8 C16,3.581722 12.418278,0 8,0 C3.581722,0 0,3.581722 0,8 C0,12.418278 3.581722,16 8,16 C9.77665502,16.0022094 11.5024547,15.4069846 12.9,14.31 L16.29,17.71 C16.4777666,17.8993127 16.7333625,18.0057983 17,18.0057983 C17.2666375,18.0057983 17.5222334,17.8993127 17.71,17.71 C17.8993127,17.5222334 18.0057983,17.2666375 18.0057983,17 C18.0057983,16.7333625 17.8993127,16.4777666 17.71,16.29 Z M2,8 C2,4.6862915 4.6862915,2 8,2 C11.3137085,2 14,4.6862915 14,8 C14,11.3137085 11.3137085,14 8,14 C4.6862915,14 2,11.3137085 2,8 Z"></path>
+</svg><span>搜索</span><span>⌘K</span></a><a href="https://github.com/jaywcjlove/reference/blob/main/experience/docker.md" class="" target="__blank"><svg viewBox="0 0 36 36" fill="currentColor" height="1em" width="1em"><path d="m33 6.4-3.7-3.7a1.71 1.71 0 0 0-2.36 0L23.65 6H6a2 2 0 0 0-2 2v22a2 2 0 0 0 2 2h22a2 2 0 0 0 2-2V11.76l3-3a1.67 1.67 0 0 0 0-2.36ZM18.83 20.13l-4.19.93 1-4.15 9.55-9.57 3.23 3.23ZM29.5 9.43 26.27 6.2l1.85-1.85 3.23 3.23Z"></path><path fill="none" d="M0 0h36v36H0z"></path></svg><span>编辑</span></a><button id="darkMode" type="button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="light" height="1em" width="1em">
+  <path d="M6.995 12c0 2.761 2.246 5.007 5.007 5.007s5.007-2.246 5.007-5.007-2.246-5.007-5.007-5.007S6.995 9.239 6.995 12zM11 19h2v3h-2zm0-17h2v3h-2zm-9 9h3v2H2zm17 0h3v2h-3zM5.637 19.778l-1.414-1.414 2.121-2.121 1.414 1.414zM16.242 6.344l2.122-2.122 1.414 1.414-2.122 2.122zM6.344 7.759 4.223 5.637l1.415-1.414 2.12 2.122zm13.434 10.605-1.414 1.414-2.122-2.122 1.414-1.414z"></path>
+</svg>
+<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" class="dark" height="1em" width="1em">
+  <path d="M12 11.807A9.002 9.002 0 0 1 10.049 2a9.942 9.942 0 0 0-5.12 2.735c-3.905 3.905-3.905 10.237 0 14.142 3.906 3.906 10.237 3.905 14.143 0a9.946 9.946 0 0 0 2.735-5.119A9.003 9.003 0 0 1 12 11.807z"></path>
+</svg>
+</button><script src="../js/dark.js"></script><a href="https://github.com/geek-tim/reference" class="" target="__blank"><svg viewBox="0 0 16 16" fill="currentColor" height="1em" width="1em"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path></svg></a></div></div></nav><div class="wrap h1body-exist max-container"><header class="wrap-header h1wrap"><h1 id="全栈之路-docker-从0到1"><svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 640 512" height="1em" width="1em">
+  <path d="M349.9 236.3h-66.1v-59.4h66.1v59.4zm0-204.3h-66.1v60.7h66.1V32zm78.2 144.8H362v59.4h66.1v-59.4zm-156.3-72.1h-66.1v60.1h66.1v-60.1zm78.1 0h-66.1v60.1h66.1v-60.1zm276.8 100c-14.4-9.7-47.6-13.2-73.1-8.4-3.3-24-16.7-44.9-41.1-63.7l-14-9.3-9.3 14c-18.4 27.8-23.4 73.6-3.7 103.8-8.7 4.7-25.8 11.1-48.4 10.7H2.4c-8.7 50.8 5.8 116.8 44 162.1 37.1 43.9 92.7 66.2 165.4 66.2 157.4 0 273.9-72.5 328.4-204.2 21.4.4 67.6.1 91.3-45.2 1.5-2.5 6.6-13.2 8.5-17.1l-13.3-8.9zm-511.1-27.9h-66v59.4h66.1v-59.4zm78.1 0h-66.1v59.4h66.1v-59.4zm78.1 0h-66.1v59.4h66.1v-59.4zm-78.1-72.1h-66.1v60.1h66.1v-60.1z"></path>
+</svg>
+<a aria-hidden="true" tabindex="-1" href="#全栈之路-docker-从0到1"><span class="icon icon-link"></span></a>全栈之路 docker 从0到1</h1><div class="wrap-body">
+</div></header><div class="menu-tocs"><div class="menu-btn"><svg aria-hidden="true" fill="currentColor" height="1em" width="1em" viewBox="0 0 16 16" version="1.1" data-view-component="true">
+  <path fill-rule="evenodd" d="M2 4a1 1 0 100-2 1 1 0 000 2zm3.75-1.5a.75.75 0 000 1.5h8.5a.75.75 0 000-1.5h-8.5zm0 5a.75.75 0 000 1.5h8.5a.75.75 0 000-1.5h-8.5zm0 5a.75.75 0 000 1.5h8.5a.75.75 0 000-1.5h-8.5zM3 8a1 1 0 11-2 0 1 1 0 012 0zm-1 6a1 1 0 100-2 1 1 0 000 2z"></path>
+</svg></div><div class="menu-modal"><a aria-hidden="true" class="leve2 tocs-link" data-num="2" href="#什么是dockerwhat抽象概念">什么是docker(WHAT：抽象概念)</a><a aria-hidden="true" class="leve3 tocs-link" data-num="3" href="#概念">概念</a><a aria-hidden="true" class="leve2 tocs-link" data-num="2" href="#怎么使用how怎么玩">怎么使用(HOW:怎么玩)</a><a aria-hidden="true" class="leve3 tocs-link" data-num="3" href="#命令分组一">命令分组一</a><a aria-hidden="true" class="leve3 tocs-link" data-num="3" href="#命令分组二">命令分组二</a><a aria-hidden="true" class="leve3 tocs-link" data-num="3" href="#服务管理">服务管理</a><a aria-hidden="true" class="leve3 tocs-link" data-num="3" href="#镜像管理">镜像管理</a><a aria-hidden="true" class="leve4 tocs-link" data-num="4" href="#常用命令">常用命令</a><a aria-hidden="true" class="leve4 tocs-link" data-num="4" href="#创建镜像">创建镜像</a><a aria-hidden="true" class="leve4 tocs-link" data-num="4" href="#发布自己的镜像">发布自己的镜像</a><a aria-hidden="true" class="leve4 tocs-link" data-num="4" href="#镜像中安装软件">镜像中安装软件</a><a aria-hidden="true" class="leve3 tocs-link" data-num="3" href="#容器管理">容器管理</a><a aria-hidden="true" class="leve4 tocs-link" data-num="4" href="#常用命令-1">常用命令</a><a aria-hidden="true" class="leve4 tocs-link" data-num="4" href="#容器服务管理">容器服务管理</a><a aria-hidden="true" class="leve4 tocs-link" data-num="4" href="#进入容器">进入容器</a><a aria-hidden="true" class="leve4 tocs-link" data-num="4" href="#文件拷贝">文件拷贝</a><a aria-hidden="true" class="leve2 tocs-link" data-num="2" href="#实践一">实践（一）</a><a aria-hidden="true" class="leve3 tocs-link" data-num="3" href="#一-docker环境搭建安装">[一] docker环境搭建(安装)</a><a aria-hidden="true" class="leve3 tocs-link" data-num="3" href="#二-本地镜像发布到阿里云流程">[二] 本地镜像发布到阿里云流程</a><a aria-hidden="true" class="leve4 tocs-link" data-num="4" href="#21-镜像的生成方法">2.1 镜像的生成方法</a><a aria-hidden="true" class="leve4 tocs-link" data-num="4" href="#22-镜像的推送到阿里云">2.2 镜像的推送到阿里云</a><a aria-hidden="true" class="leve4 tocs-link" data-num="4" href="#23-从阿里云拉取镜像到本地">2.3 从阿里云拉取镜像到本地</a><a aria-hidden="true" class="leve3 tocs-link" data-num="3" href="#三-本地镜像发布到私有仓库">[三] 本地镜像发布到私有仓库</a><a aria-hidden="true" class="leve2 tocs-link" data-num="2" href="#实践二">实践（二）</a><a aria-hidden="true" class="leve3 tocs-link" data-num="3" href="#静态业务部署">静态业务部署</a><a aria-hidden="true" class="leve3 tocs-link" data-num="3" href="#基于-docker-的-nodejs-应用容器化实践">基于 Docker 的 Node.js 应用容器化实践</a><a aria-hidden="true" class="leve2 tocs-link" data-num="2" href="#dockerfile">dockerfile</a><a aria-hidden="true" class="leve3 tocs-link" data-num="3" href="#流程示意图">流程示意图</a></div></div><div class="h1wrap-body"><div class="wrap h2body-exist"><div class="wrap-header h2wrap"><h2 id="什么是dockerwhat抽象概念"><a aria-hidden="true" tabindex="-1" href="#什么是dockerwhat抽象概念"><span class="icon icon-link"></span></a>什么是docker(WHAT：抽象概念)</h2><div class="wrap-body">
+</div></div><div class="h2wrap-body"><div class="wrap h3body-not-exist col-span-3"><div class="wrap-header h3wrap"><h3 id="概念"><a aria-hidden="true" tabindex="-1" href="#概念"><span class="icon icon-link"></span></a>概念</h3><div class="wrap-body">
+<!--rehype:wrap-class=col-span-3-->
+<p>Docker 是一个开源的应用容器引擎，基于 Go 语言 并遵从 Apache2.0 协议开源。</p>
+<p>Docker 可以让开发者打包他们的应用以及依赖包到一个轻量级、可移植的容器中，然后发布到任何流行的 Linux 机器上，也可以实现虚拟化。</p>
+<p>容器是完全使用沙箱机制，相互之间不会有任何接口（类似 iPhone 的 app）,更重要的是容器性能开销极低。</p>
+<p>Docker 包括三个基本概念:</p>
+<ul>
+<li><code>镜像（Image）</code>：Docker 镜像（Image），就相当于是一个 root 文件系统。比如官方镜像 ubuntu:16.04 就包含了完整的一套 Ubuntu16.04 最小系统的 root 文件系统。</li>
+<li><code>容器（Container）</code>：镜像（Image）和容器（Container）的关系，就像是面向对象程序设计中的类和实例一样，镜像是静态的定义，容器是镜像运行时的实体。容器可以被创建、启动、停止、删除、暂停等。</li>
+<li><code>仓库（Repository）</code>：仓库可看成一个代码控制中心，用来保存镜像。</li>
+</ul>
+<p>Docker的主要目标是：”Build ,Ship And Run Any App,AnyWhere“,通过对应组件的封装、分发、部署、运行等生命周期的管理，使用户的APP(可以是一个WEB APP 或数据库应用)以及运行环境能够做到“一次镜像，处处运行“</p>
+</div></div></div></div></div><div class="wrap h2body-exist"><div class="wrap-header h2wrap"><h2 id="怎么使用how怎么玩"><a aria-hidden="true" tabindex="-1" href="#怎么使用how怎么玩"><span class="icon icon-link"></span></a>怎么使用(HOW:怎么玩)</h2><div class="wrap-body">
+<!--rehype:body-class=cols-6-->
+</div></div><div class="h2wrap-body cols-6"><div class="wrap h3body-not-exist col-span-2"><div class="wrap-header h3wrap"><h3 id="命令分组一"><a aria-hidden="true" tabindex="-1" href="#命令分组一"><span class="icon icon-link"></span></a>命令分组一</h3><div class="wrap-body">
+<!--rehype:wrap-class=col-span-2-->
+<pre class="language-sh"><code class="language-sh code-highlight"><span class="code-line"><span class="token function">docker</span> <span class="token parameter variable">--help</span>      <span class="token comment">#帮助</span>
+</span><span class="code-line"><span class="token function">docker</span> container   <span class="token comment">#管理容器</span>
+</span><span class="code-line"><span class="token function">docker</span> image       <span class="token comment">#管理镜像</span>
+</span><span class="code-line"><span class="token function">docker</span> network     <span class="token comment">#管理网络</span>
+</span><span class="code-line"><span class="token function">docker</span> create      <span class="token comment">#创建一个新容器 </span>
+</span><span class="code-line"><span class="token function">docker</span> <span class="token builtin class-name">exec</span>        <span class="token comment">#在容器中执行一条命令</span>
+</span><span class="code-line"><span class="token function">docker</span> <span class="token function">kill</span>        <span class="token comment">#杀死一个或多个正在运行的容器    </span>
+</span><span class="code-line"><span class="token function">docker</span> attach      <span class="token comment">#介入到一个正在运行的容器</span>
+</span><span class="code-line"><span class="token function">docker</span> push        <span class="token comment">#推送一个镜像或仓库到 registry</span>
+</span><span class="code-line"><span class="token function">docker</span> pull        <span class="token comment">#拉取一个镜像或仓库到 registry</span>
+</span><span class="code-line"><span class="token function">docker</span> <span class="token function">ps</span>          <span class="token comment">#列出所有容器</span>
+</span><span class="code-line"><span class="token function">docker</span> <span class="token function">rename</span>      <span class="token comment">#重命名一个容器</span>
+</span><span class="code-line"><span class="token function">docker</span> <span class="token function">rm</span>          <span class="token comment">#删除一个或多个容器</span>
+</span><span class="code-line"><span class="token function">docker</span> start       <span class="token comment">#启动一个或多个已经停止运行的容器</span>
+</span></code></pre>
+</div></div></div><div class="wrap h3body-not-exist col-span-2"><div class="wrap-header h3wrap"><h3 id="命令分组二"><a aria-hidden="true" tabindex="-1" href="#命令分组二"><span class="icon icon-link"></span></a>命令分组二</h3><div class="wrap-body">
+<!--rehype:wrap-class=col-span-2-->
+<pre class="language-sh"><code class="language-sh code-highlight"><span class="code-line"><span class="token function">docker</span> restart     <span class="token comment">#重新启动一个或多个容器</span>
+</span><span class="code-line"><span class="token function">docker</span> stop        <span class="token comment">#停止一个或多个正在运行的容器</span>
+</span><span class="code-line"><span class="token function">docker</span> <span class="token function">top</span>         <span class="token comment">#显示一个容器内的所有进程</span>
+</span><span class="code-line"><span class="token function">docker</span> unpause     <span class="token comment">#恢复一个或多个容器内所有被暂停的进程</span>
+</span><span class="code-line"><span class="token function">docker</span> <span class="token function">cp</span>          <span class="token comment">#在本地文件系统与容器中复制 文件/文件夹</span>
+</span><span class="code-line"><span class="token function">docker</span> run         <span class="token comment">#在一个新的容器中执行一条命令</span>
+</span><span class="code-line"><span class="token function">docker</span> stats       <span class="token comment">#显示一个容器的实时资源占用</span>
+</span><span class="code-line"><span class="token comment">#</span>
+</span><span class="code-line"><span class="token function">docker</span> images      <span class="token comment">#列出镜像</span>
+</span><span class="code-line"><span class="token function">docker</span> search      <span class="token comment">#在 Docker Hub 中搜索镜像</span>
+</span><span class="code-line"><span class="token function">docker</span> rmi         <span class="token comment">#删除一个或多个镜像</span>
+</span></code></pre>
+</div></div></div><div class="wrap h3body-not-exist col-span-2"><div class="wrap-header h3wrap"><h3 id="服务管理"><a aria-hidden="true" tabindex="-1" href="#服务管理"><span class="icon icon-link"></span></a>服务管理</h3><div class="wrap-body">
+<!--rehype:wrap-class=col-span-2-->
+<pre class="language-sh"><code class="language-sh code-highlight"><span class="code-line"><span class="token function">service</span> <span class="token function">docker</span> start       <span class="token comment"># 启动docker服务，守护进程</span>
+</span><span class="code-line"><span class="token function">service</span> <span class="token function">docker</span> stop        <span class="token comment"># 停止docker服务</span>
+</span><span class="code-line"><span class="token function">service</span> <span class="token function">docker</span> status      <span class="token comment"># 查看docker服务状态</span>
+</span><span class="code-line"><span class="token function">chkconfig</span> <span class="token function">docker</span> on        <span class="token comment"># 设置为开机启动</span>
+</span><span class="code-line">sytemctl start <span class="token function">docker</span> 	   <span class="token comment"># 启动docker</span>
+</span><span class="code-line">sytemctl stop <span class="token function">docker</span> 	   <span class="token comment"># 停止docker</span>
+</span><span class="code-line">sytemctl restart <span class="token function">docker</span>    <span class="token comment"># 重启docker</span>
+</span><span class="code-line">sytemctl status <span class="token function">docker</span> 	   <span class="token comment"># 查看docker状态</span>
+</span><span class="code-line">sytemctl <span class="token builtin class-name">enable</span> <span class="token function">docker</span> 	   <span class="token comment"># 开机启动docker</span>
+</span></code></pre>
+</div></div></div><div class="wrap h3body-exist col-span-3"><div class="wrap-header h3wrap"><h3 id="镜像管理"><a aria-hidden="true" tabindex="-1" href="#镜像管理"><span class="icon icon-link"></span></a>镜像管理</h3><div class="wrap-body">
+<!--rehype:wrap-class=col-span-3-->
+<h4 id="常用命令"><a aria-hidden="true" tabindex="-1" href="#常用命令"><span class="icon icon-link"></span></a>常用命令</h4>
+<pre class="language-sh"><code class="language-sh code-highlight"><span class="code-line"><span class="token function">docker</span> pull centos:latest  <span class="token comment"># 从docker.io中下载centos镜像到本地</span>
+</span><span class="code-line"><span class="token function">docker</span> images              <span class="token comment"># 查看已下载的镜像</span>
+</span><span class="code-line"><span class="token function">docker</span> rmi <span class="token punctuation">[</span>image_id<span class="token punctuation">]</span>      <span class="token comment"># 删除镜像，指定镜像id</span>
+</span><span class="code-line">
+</span><span class="code-line"><span class="token comment"># 删除所有镜像</span>
+</span><span class="code-line"><span class="token comment"># none 默认为 docker.io</span>
+</span><span class="code-line"><span class="token function">docker</span> rmi <span class="token variable"><span class="token variable">$(</span><span class="token function">docker</span> images <span class="token operator">|</span> <span class="token function">grep</span> none <span class="token operator">|</span> <span class="token function">awk</span> <span class="token string">'{print $3}'</span> <span class="token operator">|</span> <span class="token function">sort</span> <span class="token parameter variable">-r</span><span class="token variable">)</span></span>
+</span><span class="code-line">
+</span><span class="code-line"><span class="token comment"># 连接进行进入命令行模式，exit命令退出。</span>
+</span><span class="code-line"><span class="token function">docker</span> run <span class="token parameter variable">-t</span> <span class="token parameter variable">-i</span> nginx:latest /bin/bash
+</span><span class="code-line">
+</span></code></pre>
+<h4 id="创建镜像"><a aria-hidden="true" tabindex="-1" href="#创建镜像"><span class="icon icon-link"></span></a>创建镜像</h4>
+<p>我们可以通过以下两种方式对镜像进行更改。</p>
+<ul>
+<li>从已经创建的容器中更新镜像，并且提交这个镜像
+<pre class="language-sh"><code class="language-sh code-highlight"><span class="code-line"><span class="token comment"># 通过容器创建镜像</span>
+</span><span class="code-line"><span class="token function">docker</span> commit <span class="token parameter variable">-m</span><span class="token operator">=</span><span class="token string">"First Docker"</span> <span class="token parameter variable">-a</span><span class="token operator">=</span><span class="token string">"geek-tim"</span> a6b0a6cfdacf geek-tim/nginx:v1.2.1
+</span></code></pre>
+</li>
+<li>使用 Dockerfile 指令来创建一个新的镜像
+<pre class="language-sh"><code class="language-sh code-highlight"><span class="code-line"><span class="token comment"># 通过Dockerfile创建镜像</span>
+</span><span class="code-line">FROM node:8.4
+</span><span class="code-line">COPY <span class="token builtin class-name">.</span> /app
+</span><span class="code-line">WORKDIR /app
+</span><span class="code-line">RUN <span class="token function">npm</span> <span class="token function">install</span> <span class="token parameter variable">--registry</span><span class="token operator">=</span>https://registry.npm.taobao.org
+</span><span class="code-line">EXPOSE <span class="token number">3000</span>
+</span></code></pre>
+</li>
+</ul>
+<h4 id="发布自己的镜像"><a aria-hidden="true" tabindex="-1" href="#发布自己的镜像"><span class="icon icon-link"></span></a>发布自己的镜像</h4>
+<ul class="style-timeline">
+<li>1.在Docker 注册账户，发布的镜像都在这个页面里展示</li>
+<li>2.将上面做的镜像nginx，起个新的名字nginx-test
+<pre class="language-sh"><code class="language-sh code-highlight"><span class="code-line">$ <span class="token function">docker</span> tag geek-tim/nginx:v1.2.1 geek-tim/nginx-test:lastest
+</span></code></pre>
+</li>
+<li>3.登录docker
+<pre class="language-sh"><code class="language-sh code-highlight"><span class="code-line">$ <span class="token function">docker</span> login
+</span></code></pre>
+</li>
+<li>4.上传nginx-test镜像
+<pre class="language-sh"><code class="language-sh code-highlight"><span class="code-line">$ <span class="token function">docker</span> push geek-tim/nginx-test:lastest
+</span></code></pre>
+</li>
+</ul>
+<!--rehype:className=style-timeline-->
+<h4 id="镜像中安装软件"><a aria-hidden="true" tabindex="-1" href="#镜像中安装软件"><span class="icon icon-link"></span></a>镜像中安装软件</h4>
+<pre class="language-sh"><code class="language-sh code-highlight"><span class="code-line"><span class="token comment"># 进入到centos7镜像系统</span>
+</span><span class="code-line"><span class="token function">docker</span> run <span class="token parameter variable">-i</span> <span class="token parameter variable">-t</span> centos:7 /bin/bash
+</span><span class="code-line">yum update
+</span><span class="code-line">yum <span class="token function">install</span> <span class="token function">vim</span>
+</span></code></pre>
+</div></div></div><div class="wrap h3body-exist col-span-3"><div class="wrap-header h3wrap"><h3 id="容器管理"><a aria-hidden="true" tabindex="-1" href="#容器管理"><span class="icon icon-link"></span></a>容器管理</h3><div class="wrap-body">
+<!--rehype:wrap-class=col-span-3-->
+<h4 id="常用命令-1"><a aria-hidden="true" tabindex="-1" href="#常用命令-1"><span class="icon icon-link"></span></a>常用命令</h4>
+<pre class="language-sh"><code class="language-sh code-highlight"><span class="code-line"><span class="token comment"># 列出本机正在运行的容器</span>
+</span><span class="code-line"><span class="token function">docker</span> container <span class="token function">ls</span>
+</span><span class="code-line"><span class="token comment"># 列出本机所有容器，包括终止运行的容器</span>
+</span><span class="code-line"><span class="token function">docker</span> container <span class="token function">ls</span> <span class="token parameter variable">--all</span>
+</span><span class="code-line"><span class="token function">docker</span> start <span class="token punctuation">[</span>containerID/Names<span class="token punctuation">]</span> <span class="token comment"># 启动容器</span>
+</span><span class="code-line"><span class="token function">docker</span> stop <span class="token punctuation">[</span>containerID/Names<span class="token punctuation">]</span>  <span class="token comment"># 停止容器</span>
+</span><span class="code-line"><span class="token function">docker</span> <span class="token function">rm</span> <span class="token punctuation">[</span>containerID/Names<span class="token punctuation">]</span>    <span class="token comment"># 删除容器</span>
+</span><span class="code-line"><span class="token function">docker</span> logs <span class="token punctuation">[</span>containerID/Names<span class="token punctuation">]</span>  <span class="token comment"># 查看日志</span>
+</span><span class="code-line"><span class="token function">docker</span> <span class="token builtin class-name">exec</span> <span class="token parameter variable">-it</span> <span class="token punctuation">[</span>containerID/Names<span class="token punctuation">]</span> /bin/bash  <span class="token comment"># 进入容器</span>
+</span><span class="code-line">
+</span><span class="code-line"><span class="token comment"># 从正在运行的 Docker 容器里面，将文件拷贝到本机，注意后面有个【点】拷贝到当前目录</span>
+</span><span class="code-line"><span class="token function">docker</span> container <span class="token function">cp</span> <span class="token punctuation">[</span>containID<span class="token punctuation">]</span>:<span class="token punctuation">[</span>/path/to/file<span class="token punctuation">]</span> <span class="token builtin class-name">.</span>
+</span><span class="code-line">
+</span><span class="code-line"><span class="token function">docker</span> run centos <span class="token builtin class-name">echo</span> <span class="token string">"hello world"</span>  <span class="token comment"># 在docker容器中运行hello world!</span>
+</span><span class="code-line"><span class="token function">docker</span> run centos yum <span class="token function">install</span> <span class="token parameter variable">-y</span> <span class="token function">wget</span> <span class="token comment"># 在docker容器中，安装wget软件</span>
+</span><span class="code-line"><span class="token function">docker</span> <span class="token function">ps</span>                             <span class="token comment"># 列出包括未运行的容器</span>
+</span><span class="code-line"><span class="token function">docker</span> <span class="token function">ps</span> <span class="token parameter variable">-a</span>                          <span class="token comment"># 查看所有容器(包括正在运行和已停止的)</span>
+</span><span class="code-line"><span class="token function">docker</span> logs my-nginx                  <span class="token comment"># 查看 my-nginx 容器日志</span>
+</span><span class="code-line">
+</span><span class="code-line"><span class="token function">docker</span> run <span class="token parameter variable">-i</span> <span class="token parameter variable">-t</span> centos /bin/bash     <span class="token comment"># 启动一个容器</span>
+</span><span class="code-line"><span class="token function">docker</span> inspect centos                 <span class="token comment"># 检查运行中的镜像</span>
+</span><span class="code-line"><span class="token function">docker</span> commit 8bd centos              <span class="token comment"># 保存对容器的修改</span>
+</span><span class="code-line"><span class="token function">docker</span> commit <span class="token parameter variable">-m</span> <span class="token string">"n changed"</span> my-nginx my-nginx-image <span class="token comment"># 使用已经存在的容器创建一个镜像</span>
+</span><span class="code-line">
+</span><span class="code-line"><span class="token comment"># 获取id为 44fc0f0582d9 的PID进程编号</span>
+</span><span class="code-line"><span class="token function">docker</span> inspect <span class="token parameter variable">-f</span> <span class="token punctuation">{</span><span class="token punctuation">{</span>.State.Pid<span class="token punctuation">}</span><span class="token punctuation">}</span> 44fc0f0582d9        
+</span><span class="code-line">
+</span><span class="code-line"><span class="token comment"># 下载指定版本容器镜像</span>
+</span><span class="code-line"><span class="token function">docker</span> pull gitlab/gitlab-ce:11.2.3-ce.0
+</span></code></pre>
+<h4 id="容器服务管理"><a aria-hidden="true" tabindex="-1" href="#容器服务管理"><span class="icon icon-link"></span></a>容器服务管理</h4>
+<pre class="language-sh"><code class="language-sh code-highlight"><span class="code-line"><span class="token function">docker</span> run <span class="token parameter variable">-itd</span> <span class="token parameter variable">--name</span> my-nginx2 nginx  <span class="token comment"># 通过nginx镜像，【创建】容器名为 my-nginx2 的容器</span>
+</span><span class="code-line"><span class="token function">docker</span> start my-nginx <span class="token parameter variable">--restart</span><span class="token operator">=</span>always  <span class="token comment"># 【启动策略】一个已经存在的容器启动添加策略</span>
+</span><span class="code-line">    <span class="token comment"># no - 容器不重启</span>
+</span><span class="code-line">    <span class="token comment"># on-failure - 容器推出状态非0时重启</span>
+</span><span class="code-line">    <span class="token comment"># always - 始终重启</span>
+</span><span class="code-line"><span class="token function">docker</span> start my-nginx             <span class="token comment"># 【启动】一个已经存在的容器</span>
+</span><span class="code-line"><span class="token function">docker</span> restart my-nginx           <span class="token comment"># 【重启】容器</span>
+</span><span class="code-line"><span class="token function">docker</span> stop my-nginx              <span class="token comment"># 【停止运行】一个容器</span>
+</span><span class="code-line"><span class="token function">docker</span> <span class="token function">kill</span> my-nginx              <span class="token comment"># 【杀死】一个运行中的容器</span>
+</span><span class="code-line"><span class="token function">docker</span> <span class="token function">rename</span> my-nginx new-nginx  <span class="token comment"># 【重命名】容器</span>
+</span><span class="code-line"><span class="token function">docker</span> <span class="token function">rm</span> new-nginx               <span class="token comment"># 【删除】容器</span>
+</span></code></pre>
+<h4 id="进入容器"><a aria-hidden="true" tabindex="-1" href="#进入容器"><span class="icon icon-link"></span></a>进入容器</h4>
+<ul class="style-timeline">
+<li>1.创建一个守护状态的 Docker 容器
+<pre class="language-sh"><code class="language-sh code-highlight"><span class="code-line">$ <span class="token function">docker</span> run <span class="token parameter variable">-itd</span> my-nginx /bin/bash
+</span></code></pre>
+</li>
+<li>2.使用docker ps查看到该容器信息
+<pre class="language-sh"><code class="language-sh code-highlight"><span class="code-line">$ <span class="token function">docker</span> <span class="token function">ps</span>
+</span></code></pre>
+</li>
+<li>3.使用docker exec命令进入一个已经在运行的容器
+<pre class="language-sh"><code class="language-sh code-highlight"><span class="code-line">$ <span class="token function">docker</span> <span class="token builtin class-name">exec</span> <span class="token parameter variable">-it</span> 6bd0496da64f /bin/bash
+</span></code></pre>
+</li>
+<li>4.exit命令退出
+<pre class="language-sh"><code class="language-sh code-highlight"><span class="code-line">$ <span class="token builtin class-name">exit</span>
+</span></code></pre>
+</li>
+</ul>
+<!--rehype:className=style-timeline-->
+<h4 id="文件拷贝"><a aria-hidden="true" tabindex="-1" href="#文件拷贝"><span class="icon icon-link"></span></a>文件拷贝</h4>
+<p>从主机复制到容器 sudo docker cp host_path containerID:container_path
+从容器复制到主机 sudo docker cp containerID:container_path host_path</p>
+</div></div></div></div></div><div class="wrap h2body-exist"><div class="wrap-header h2wrap"><h2 id="实践一"><a aria-hidden="true" tabindex="-1" href="#实践一"><span class="icon icon-link"></span></a>实践（一）</h2><div class="wrap-body">
+</div></div><div class="h2wrap-body"><div class="wrap h3body-not-exist"><div class="wrap-header h3wrap"><h3 id="一-docker环境搭建安装"><a aria-hidden="true" tabindex="-1" href="#一-docker环境搭建安装"><span class="icon icon-link"></span></a>[一] docker环境搭建(安装)</h3><div class="wrap-body">
+<pre class="language-sh"><code class="language-sh code-highlight"><span class="code-line">yum <span class="token function">install</span> <span class="token function">docker</span> <span class="token parameter variable">-y</span>          <span class="token comment">#安装</span>
+</span><span class="code-line">systemctl start <span class="token function">docker</span>         <span class="token comment">#启动    </span>
+</span><span class="code-line">systemctl <span class="token builtin class-name">enable</span> <span class="token function">docker</span>        <span class="token comment">#设置开机自启动</span>
+</span></code></pre>
+</div></div></div><div class="wrap h3body-exist"><div class="wrap-header h3wrap"><h3 id="二-本地镜像发布到阿里云流程"><a aria-hidden="true" tabindex="-1" href="#二-本地镜像发布到阿里云流程"><span class="icon icon-link"></span></a>[二] 本地镜像发布到阿里云流程</h3><div class="wrap-body">
+<h4 id="21-镜像的生成方法"><a aria-hidden="true" tabindex="-1" href="#21-镜像的生成方法"><span class="icon icon-link"></span></a>2.1 镜像的生成方法</h4>
+<p>1、基于原有镜像commit</p>
+<pre class="language-sh"><code class="language-sh code-highlight"><span class="code-line"><span class="token function">docker</span> commit xxx xxx:1.1
+</span></code></pre>
+<p>2、基于dockerfile</p>
+<pre class="language-sh"><code class="language-sh code-highlight"><span class="code-line"><span class="token function">docker</span> commit <span class="token parameter variable">-m</span><span class="token operator">=</span><span class="token string">"First Docker"</span> <span class="token parameter variable">-a</span><span class="token operator">=</span><span class="token string">"geek-tim"</span> a6b0a6cfdacf geek-tim/nginx:v1.2.1
+</span></code></pre>
+<h4 id="22-镜像的推送到阿里云"><a aria-hidden="true" tabindex="-1" href="#22-镜像的推送到阿里云"><span class="icon icon-link"></span></a>2.2 镜像的推送到阿里云</h4>
+<h4 id="23-从阿里云拉取镜像到本地"><a aria-hidden="true" tabindex="-1" href="#23-从阿里云拉取镜像到本地"><span class="icon icon-link"></span></a>2.3 从阿里云拉取镜像到本地</h4>
+</div></div></div><div class="wrap h3body-not-exist"><div class="wrap-header h3wrap"><h3 id="三-本地镜像发布到私有仓库"><a aria-hidden="true" tabindex="-1" href="#三-本地镜像发布到私有仓库"><span class="icon icon-link"></span></a>[三] 本地镜像发布到私有仓库</h3><div class="wrap-body">
+<p>docker registry</p>
+</div></div></div></div></div><div class="wrap h2body-exist"><div class="wrap-header h2wrap"><h2 id="实践二"><a aria-hidden="true" tabindex="-1" href="#实践二"><span class="icon icon-link"></span></a>实践（二）</h2><div class="wrap-body">
+<p>与实际业务相结合</p>
+</div></div><div class="h2wrap-body"><div class="wrap h3body-not-exist"><div class="wrap-header h3wrap"><h3 id="静态业务部署"><a aria-hidden="true" tabindex="-1" href="#静态业务部署"><span class="icon icon-link"></span></a>静态业务部署</h3><div class="wrap-body">
+</div></div></div><div class="wrap h3body-not-exist"><div class="wrap-header h3wrap"><h3 id="基于-docker-的-nodejs-应用容器化实践"><a aria-hidden="true" tabindex="-1" href="#基于-docker-的-nodejs-应用容器化实践"><span class="icon icon-link"></span></a>基于 Docker 的 Node.js 应用容器化实践</h3><div class="wrap-body">
+</div></div></div></div></div><div class="wrap h2body-exist"><div class="wrap-header h2wrap"><h2 id="dockerfile"><a aria-hidden="true" tabindex="-1" href="#dockerfile"><span class="icon icon-link"></span></a>dockerfile</h2><div class="wrap-body">
+</div></div><div class="h2wrap-body"><div class="wrap h3body-not-exist"><div class="wrap-header h3wrap"><h3 id="流程示意图"><a aria-hidden="true" tabindex="-1" href="#流程示意图"><span class="icon icon-link"></span></a>流程示意图</h3><div class="wrap-body">
+<pre><code class="code-highlight"><span class="code-line">╭┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈╮
+</span><span class="code-line">┆  dockerfile   ┆
+</span><span class="code-line">╰┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈╯
+</span><span class="code-line">       build
+</span><span class="code-line">╭┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈╮
+</span><span class="code-line">┆     images    ┆
+</span><span class="code-line">╰┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈╯
+</span><span class="code-line">       run
+</span><span class="code-line">╭┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈╮
+</span><span class="code-line">┆   container   ┆
+</span><span class="code-line">╰┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈╯
+</span></code></pre>
+</div></div></div></div></div></div></div><footer class="footer-wrap"><footer class="max-container">© 2022 Kenny Wang.</footer></footer><script src="../data.js" defer></script><script src="../js/fuse.min.js" defer></script><script src="../js/main.js" defer></script><div id="mysearch"><div class="mysearch-box"><div class="mysearch-input"><div><svg xmlns="http://www.w3.org/2000/svg" height="1em" width="1em" viewBox="0 0 18 18">
+  <path fill="currentColor" d="M17.71,16.29 L14.31,12.9 C15.4069846,11.5024547 16.0022094,9.77665502 16,8 C16,3.581722 12.418278,0 8,0 C3.581722,0 0,3.581722 0,8 C0,12.418278 3.581722,16 8,16 C9.77665502,16.0022094 11.5024547,15.4069846 12.9,14.31 L16.29,17.71 C16.4777666,17.8993127 16.7333625,18.0057983 17,18.0057983 C17.2666375,18.0057983 17.5222334,17.8993127 17.71,17.71 C17.8993127,17.5222334 18.0057983,17.2666375 18.0057983,17 C18.0057983,16.7333625 17.8993127,16.4777666 17.71,16.29 Z M2,8 C2,4.6862915 4.6862915,2 8,2 C11.3137085,2 14,4.6862915 14,8 C14,11.3137085 11.3137085,14 8,14 C4.6862915,14 2,11.3137085 2,8 Z"></path>
+</svg><input id="mysearch-input" type="search" placeholder="搜索" autocomplete="off"><div class="mysearch-clear"></div></div><button id="mysearch-close" type="button">搜索</button></div><div class="mysearch-result"><div id="mysearch-menu"></div><div id="mysearch-content"></div></div></div></div></body>
+</html>
